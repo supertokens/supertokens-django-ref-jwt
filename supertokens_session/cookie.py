@@ -12,7 +12,14 @@ def set_header(response, key, value):
     response[key] = value
 
 def get_header(request, key):
-    return request.META.get(key.upper())
+    # though request.headers method is available, sticking to META because request.headers
+    # is available only from django v2.2 which is the latest one and many might not be using this version
+    # also, any HTTP header in the request are converted to META keys by converting all characters
+    # to uppercase, replacing any hyphens with underscores and adding an HTTP_ prefix to the name.
+    # e.g. a header called test-abc would be mapped to the META key HTTP_TEST_ABC
+    # also, as a side note, request.headers provides access to all HTTP-prefixed headers (plus
+    # Content-Length and Content-Type) from the request  
+    return request.META.get('HTTP_' + key.upper())
 
 def get_cookie(request, key):
     return request.COOKIES[key]

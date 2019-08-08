@@ -1,9 +1,12 @@
 from supertokens_session import cookie
 from django.http import HttpRequest, HttpResponse
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from datetime import datetime, timedelta
 
 class CookieTest(TestCase):
+
+    def setUp(self):
+        self.factory = RequestFactory()
 
     def test_set_cookie(self):
         response = HttpResponse()
@@ -39,7 +42,23 @@ class CookieTest(TestCase):
         key = 'test'
         value = 'value'
 
-        request = HttpRequest()
+        request = self.factory.get('/')
         request.COOKIES[key] = value
 
         self.assertEqual(cookie.get_cookie(request, key), value)
+
+    def test_get_header(self):
+        key = 'TEST'
+        value = 'value'
+
+        request = self.factory.get('/', **{'HTTP_' + key: value})
+        self.assertEqual(cookie.get_header(request, key), value)
+
+    def test_set_header(self):
+        response = HttpResponse()
+        key = 'HTTP_TEST'
+        value = 'value'
+
+        cookie.set_header(response, key, value)
+        self.assertTrue(response.has_header(key))
+        self.assertEqual(response.get(key), value)
