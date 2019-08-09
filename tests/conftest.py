@@ -5,22 +5,22 @@ def pytest_configure():
     
     settings.configure(
         DEBUG_PROPAGATE_EXCEPTIONS=True,
-        # DATABASES={
-        #     'default': {
-        #         'ENGINE': 'django.db.backends.sqlite3',
-        #         'NAME': ':memory:'
-        #     }
-        # },
         DATABASES={
             'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': os.environ.get('DB_NAME', 'sample_db'),
-                'USER': os.environ.get('DB_USER', 'root'),
-                'PASSWORD': os.environ.get('DB_PASS', 'root'),
-                'HOST': 'localhost',
-                'PORT': '5432',
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': ':memory:'
             }
         },
+        # DATABASES={
+        #     'default': {
+        #         'ENGINE': 'django.db.backends.postgresql',
+        #         'NAME': os.environ.get('DB_NAME', 'sample_db'),
+        #         'USER': os.environ.get('DB_USER', 'root'),
+        #         'PASSWORD': os.environ.get('DB_PASS', 'root'),
+        #         'HOST': 'localhost',
+        #         'PORT': '5432',
+        #     }
+        # },
         SITE_ID=1,
         SECRET_KEY='not very secret in tests',
         USE_I18N=True,

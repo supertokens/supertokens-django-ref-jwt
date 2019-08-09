@@ -7,6 +7,13 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, "README.md"), mode="r", encoding="utf-8") as f:
     long_description = f.read()
 
+extras_require = {
+    'dev': ([
+        'pytest',
+        'pytest-django'
+    ])
+}
+
 setup(
     name = "supertokens_session",
     verion = "0.0.1",
@@ -15,7 +22,7 @@ setup(
     description = "Supertokens package for python (DRF)",
     long_description = long_description,
     long_description_content_type = "text/markdown",
-    # url = "https://github.com/...",
+    url = "https://github.com/supertokens/supertokens-django-ref-jwt",
     packages = find_packages(exclude=["contrib", "docs", "tests*", "tests", "licenses", "requirements"]),
     classifiers = [
         "Intended Audience :: Developers",
@@ -24,18 +31,12 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    # project_urls = {
-    #     "Documentation": "https://packaging.python.org/tutorials/distributing-packages/",
-    #     "Funding": "https://donate.pypi.org",
-    #     "Say Thanks!": "http://saythanks.io/to/example",
-    #     "Source": "https://github.com/pypa/sampleproject/",
-    #     "Tracker": "https://github.com/pypa/sampleproject/issues",
-    # },
     keywords = "",
     install_requires = [
         "django",
         "djangorestframework",
-        "pyjwt",
+        "pycryptodome",
     ],
-    python_requires='>=3.7'
+    python_requires='>=3.7',
+    extras_require=extras_require
 )

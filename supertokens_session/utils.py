@@ -1,11 +1,10 @@
 from base64 import b64encode, b64decode
 import hmac
-from hashlib import sha256, pbkdf2_hmac
+from hashlib import sha256, pbkdf2_hmac, md5, sha256
 import random
 from string import ascii_lowercase, digits
 from uuid import uuid4
 from Crypto.Cipher import AES
-from hashlib import md5, sha256
 from json import dumps, loads
 from .exceptions import raise_general_exception
 
