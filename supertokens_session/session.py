@@ -9,8 +9,8 @@ class Session:
         self.__response = response
 
     def revoke_session(self):
-        session_helper.revoke_session(self.__session_handle)
-        clear_session_from_cookie(self.__response)
+        if session_helper.revoke_session(self.__session_handle):
+            clear_session_from_cookie(self.__response)
     
     def get_session_data(self):
         try:

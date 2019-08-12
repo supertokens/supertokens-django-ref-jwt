@@ -28,7 +28,7 @@ def create_new_session(user_id, jwt_payload, session_data):
         anti_csrf_token = generate_uuid() if supertokens_settings.ANTI_CSRF_ENABLE else None
         access_token = AccessToken.create_new_access_token(session_handle, user_id, custom_hash(refresh_token['token']), anti_csrf_token, None, jwt_payload)
 
-        session_in_db = RefreshTokenModel(session_handle=session_handle, user_id=serialize_user_id(user_id), refresh_token_hash_2=custom_hash(custom_hash(refresh_token['token'])), session_info=serialize_data(session_data), expires_at=datetime.fromtimestamp(refresh_token['expires_at']), jwt_payload=serialize_data(jwt_payload))
+        session_in_db = RefreshTokenModel(session_handle=session_handle, user_id=serialize_user_id(user_id), refresh_token_hash_2=custom_hash(custom_hash(refresh_token['token'])), session_data=serialize_data(session_data), expires_at=datetime.fromtimestamp(refresh_token['expires_at']), jwt_payload=serialize_data(jwt_payload))
         session_in_db.save()
 
         return {
@@ -90,9 +90,7 @@ def get_session(access_token, anti_csrf_token=None):
                     refresh_token_validity = RefreshToken.get_validity()
                     current_datetime = datetime.now()
                     expires_at = current_datetime + refresh_token_validity
-                    session_info.refresh_token_hash_2 = custom_hash(access_token_info['refresh_token_hash_1'])
-                    session_info.expires_at = expires_at
-                    session_info.save()
+                    RefreshTokenModel.objects.filter(session_handle=session_handle).update(refresh_token_hash_2=custom_hash(access_token_info['refresh_token_hash_1']), expires_at=expires_at)
                 
                 new_access_token = AccessToken.create_new_access_token(session_handle, access_token_info['user_id'], access_token_info['refresh_token_hash_1'], access_token_info['anti_csrf_token'], None, access_token_info['user_payload'])
 
@@ -157,9 +155,7 @@ def refresh_session(refresh_token):
                 refresh_token_validity = RefreshToken.get_validity()
                 current_datetime = datetime.now()
                 expires_at = current_datetime + refresh_token_validity
-                session_info.refresh_token_hash_2 = custom_hash(custom_hash(refresh_token))
-                session_info.expires_at = expires_at
-                session_info.save()
+                RefreshTokenModel.objects.filter(session_handle=session_handle).update(refresh_token_hash_2=custom_hash(custom_hash(refresh_token)), expires_at=expires_at)
                 return refresh_session(refresh_token)
 
         raise_token_theft_exception(refresh_token_info['user_id'], session_handle)
@@ -171,7 +167,7 @@ def refresh_session(refresh_token):
 def get_session_data(session_handle):
     try:
         session = RefreshTokenModel.objects.get(session_handle=session_handle)
-        return unserialize_data(session.session_info)
+        return unserialize_data(session.session_data)
     except RefreshTokenModel.DoesNotExist as e:
         return None
     except Exception as e:
@@ -179,9 +175,7 @@ def get_session_data(session_handle):
 
 def update_session_data(session_handle, session_data):
     try:
-        session = RefreshTokenModel.objects.get(session_handle=session_handle)
-        session.session_info = serialize_data(session_data)
-        session.save()
+        no_of_rows_matched = RefreshTokenModel.objects.filter(session_handle=session_handle).update(session_data=serialize_data(session_data))
     except RefreshTokenModel.DoesNotExist as e:
         raise_unauthorized_exception('session does not exist anymore')
     except Exception as e:
@@ -205,9 +199,13 @@ def revoke_all_sessions_for_user(user_id):
 
 def revoke_session(session_handle):
     try:
-        RefreshTokenModel.objects.get(session_handle=session_handle).delete()
-        return True
+        # deletes the object and returns the number of objects deleted and a dictionary with the number of deletions per object type
+        rows_deleted, _ = RefreshTokenModel.objects.get(session_handle=session_handle).delete()
+        return rows_deleted == 1            
     except RefreshTokenModel.DoesNotExist as e:
         return False
     except Exception as e:
         raise_general_exception(e)
+
+def remove_expired_tokens():
+    return RefreshTokenModel.objects.filter(expires_at__lte=datetime.now()).delete()

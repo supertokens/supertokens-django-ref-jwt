@@ -2,6 +2,7 @@ from django.test import TestCase
 from supertokens_session.session_helper import (
     get_all_session_handles_for_user,
     revoke_all_sessions_for_user,
+    remove_expired_tokens,
     update_session_data,
     create_new_session,
     get_session_data,
@@ -421,7 +422,7 @@ class SessionTest(TestCase):
         except Exception as e:
             self.assertTrue(True)
 
-    def test_update_session_info(self):
+    def test_update_session_data(self):
         user_id = 'userId'
         jwt_payload = { 'a': 'a' }
         session_data = { 'b': 'b' }
@@ -429,13 +430,13 @@ class SessionTest(TestCase):
         session = create_new_session(user_id, jwt_payload, session_data)
         validate(session, schema_create_new_session_ACT_enabled)
 
-        session_info = get_session_data(session['session']['handle'])
-        self.assertEqual(session_info, session_data)
+        session_data_db = get_session_data(session['session']['handle'])
+        self.assertEqual(session_data_db, session_data)
         
         new_session_data = 44
         update_session_data(session['session']['handle'], new_session_data)
-        session_info = get_session_data(session['session']['handle'])
-        self.assertEqual(session_info, new_session_data)
+        session_data_db = get_session_data(session['session']['handle'])
+        self.assertEqual(session_data_db, new_session_data)
 
     def test_revoke_session_without_blacklisting(self):
         user_id = 'userId'
@@ -662,4 +663,25 @@ class SessionTest(TestCase):
             self.assertTrue(False)
         except SuperTokensTokenTheftException as e:
             self.assertEqual(user_id, e.get_user_id())
-            self.assertEqual(session['session']['handle'], e.get_session_handle())            
+            self.assertEqual(session['session']['handle'], e.get_session_handle())
+
+    def test_remove_expired_sessions(self):
+        new_settings = {
+            "REFRESH_TOKEN_VALIDITY": 0.0005
+        }
+        update_settings(new_settings)
+
+        user_id = 'userId'
+        jwt_payload = { 'a': 'a' }
+        session_data = { 'b': 'b' }
+
+        create_new_session(user_id, jwt_payload, session_data)
+        create_new_session(user_id, jwt_payload, session_data)
+        create_new_session(user_id, jwt_payload, session_data)
+        self.assertEqual(RefreshTokenModel.objects.all().count(), 3)
+
+        sleep(2)
+
+        create_new_session(user_id, jwt_payload, session_data)
+        remove_expired_tokens()
+        self.assertEqual(RefreshTokenModel.objects.all().count(), 1)

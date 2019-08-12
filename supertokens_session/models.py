@@ -14,7 +14,7 @@ class RefreshToken(models.Model):
     session_handle          = models.CharField(max_length=255, primary_key=True, editable=False, unique=True, null=False)
     user_id                 = models.CharField(max_length=128, null=False, editable=True)
     refresh_token_hash_2    = models.CharField(max_length=128, null=False, editable=True)
-    session_info            = models.TextField(editable=True)
+    session_data            = models.TextField(editable=True)
     expires_at              = models.DateTimeField()
     jwt_payload             = models.TextField(null=False)
 
