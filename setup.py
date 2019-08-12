@@ -10,7 +10,8 @@ with open(path.join(here, "README.md"), mode="r", encoding="utf-8") as f:
 extras_require = {
     'dev': ([
         'pytest',
-        'pytest-django'
+        'pytest-django',
+        'jsonschema'
     ])
 }
 

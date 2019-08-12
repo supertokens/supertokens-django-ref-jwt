@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.conf import settings
 from supertokens_session.session_helper import (
     get_all_session_handles_for_user,
     revoke_all_sessions_for_user,

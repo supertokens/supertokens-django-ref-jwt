@@ -164,7 +164,7 @@ def refresh_session(refresh_token):
 
         raise_token_theft_exception(refresh_token_info['user_id'], session_handle)
     except RefreshTokenModel.DoesNotExist as e:
-        raise_general_exception('session does not exist or is expired')
+        raise_unauthorized_exception('session does not exist or is expired')
     except Exception as e:
         raise_general_exception(e)
 

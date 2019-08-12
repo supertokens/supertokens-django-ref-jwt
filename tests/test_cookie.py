@@ -1,5 +1,5 @@
 from supertokens_session import cookie
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from django.test import TestCase, RequestFactory
 from datetime import datetime, timedelta
 
@@ -19,7 +19,7 @@ class CookieTest(TestCase):
         secure = True
         httponly = True
 
-        cookie.set_cookie(response, key, value, expires, path, domain, secure, httponly)
+        cookie.set_cookie(response, key, value, expires.timestamp(), path, domain, secure, httponly)
         cookie_obj = response.cookies.get(key) # will return None if no cookie with this key is found
         self.assertIsNotNone(cookie_obj)
         # value property is directly available on cookie object

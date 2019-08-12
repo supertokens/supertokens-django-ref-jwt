@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.conf import settings
 from supertokens_session.refresh_token import RefreshToken
 from supertokens_session.refresh_token_signing_key import RefreshTokenSigningKey
 from .utils import set_default_settings, update_settings
