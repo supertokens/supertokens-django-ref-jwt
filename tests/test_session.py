@@ -434,7 +434,7 @@ class SessionTest(TestCase):
         self.assertEqual(session_data_db, session_data)
         
         new_session_data = 44
-        update_session_data(session['session']['handle'], new_session_data)
+        self.assertTrue(update_session_data(session['session']['handle'], new_session_data))
         session_data_db = get_session_data(session['session']['handle'])
         self.assertEqual(session_data_db, new_session_data)
 
@@ -449,7 +449,7 @@ class SessionTest(TestCase):
         validate(session_2, schema_create_new_session_ACT_enabled)
 
         self.assertEqual(RefreshTokenModel.objects.all().count(), 2)
-        revoke_session(session_1['session']['handle'])
+        self.assertTrue(revoke_session(session_1['session']['handle']))
         self.assertEqual(RefreshTokenModel.objects.all().count(), 1)
 
         try:
@@ -478,7 +478,7 @@ class SessionTest(TestCase):
         validate(session_2, schema_create_new_session_ACT_enabled)
 
         self.assertEqual(RefreshTokenModel.objects.all().count(), 2)
-        revoke_session(session_1['session']['handle'])
+        self.assertTrue(revoke_session(session_1['session']['handle']))
         self.assertEqual(RefreshTokenModel.objects.all().count(), 1)
 
         try:

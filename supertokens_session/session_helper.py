@@ -176,6 +176,7 @@ def get_session_data(session_handle):
 def update_session_data(session_handle, session_data):
     try:
         no_of_rows_matched = RefreshTokenModel.objects.filter(session_handle=session_handle).update(session_data=serialize_data(session_data))
+        return no_of_rows_matched == 1
     except RefreshTokenModel.DoesNotExist as e:
         raise_unauthorized_exception('session does not exist anymore')
     except Exception as e:
