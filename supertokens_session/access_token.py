@@ -5,8 +5,9 @@ from datetime import datetime, timedelta
 from math import floor
 from .exceptions import raise_general_exception, raise_try_refresh_roken_exception
 
+
 class AccessToken:
-    
+
     @staticmethod
     def get_info_from_access_token(token, retry=True):
         from .settings import supertokens_settings
@@ -37,7 +38,7 @@ class AccessToken:
                 user_payload = payload["userPayload"]
             else:
                 user_payload = None
-            
+
             if session_handle is None or user_id is None or refresh_token_hash_1 is None or expires_at is None or (anti_csrf_token is None and supertokens_settings.ANTI_CSRF_ENABLE):
                 raise Exception("invalid access token payload")
 
@@ -62,10 +63,11 @@ class AccessToken:
     @staticmethod
     def create_new_access_token(session_handle, user_id, refresh_token_hash_1, anti_csrf_token, parent_refresh_token_hash_1, user_payload):
         from .settings import supertokens_settings
-        
+
         signingkey = AccessTokenSigningKey.get_key()
         try:
-            validity = timedelta(seconds=supertokens_settings.ACCESS_TOKEN_VALIDITY)
+            validity = timedelta(
+                seconds=supertokens_settings.ACCESS_TOKEN_VALIDITY)
             current_datetime = datetime.now()
             expires_at = validity + current_datetime
             expires_at = floor(expires_at.timestamp())

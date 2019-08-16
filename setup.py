@@ -11,7 +11,9 @@ extras_require = {
     'dev': ([
         'pytest',
         'pytest-django',
-        'jsonschema'
+        'jsonschema',
+        'flake8',
+        'autopep8'
     ])
 }
 

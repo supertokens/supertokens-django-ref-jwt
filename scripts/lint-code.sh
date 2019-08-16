@@ -1,0 +1,1 @@
+(cd .. && autopep8 -r -i -a supertokens_session tests)

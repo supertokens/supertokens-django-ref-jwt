@@ -1,5 +1,5 @@
 from django.test import TestCase, RequestFactory
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from .utils import set_default_settings, update_settings
 from supertokens_session.refresh_token_signing_key import RefreshTokenSigningKey
 from supertokens_session.access_token_singingkey import AccessTokenSigningKey
@@ -12,11 +12,11 @@ from supertokens_session.constant import (
 )
 from time import sleep
 from supertokens_session.exceptions import (
-    SuperTokensGeneralException,
     SuperTokensTokenTheftException,
     SuperTokensUnauthorizedException,
     SuperTokensTryRefreshTokenException
 )
+
 
 class SupertokensTest(TestCase):
 
@@ -37,19 +37,21 @@ class SupertokensTest(TestCase):
         update_settings(new_settings)
 
         user_id = 'userId'
-        jwt_payload = { 'a': 'a' }
-        session_data = { 'b': 'b' }
+        jwt_payload = {'a': 'a'}
+        session_data = {'b': 'b'}
 
         response = HttpResponse()
 
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -60,7 +62,8 @@ class SupertokensTest(TestCase):
         refresh_token_cookie = refresh_token_cookie.value
         id_refresh_token_cookie = id_refresh_token_cookie.value
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
@@ -69,7 +72,8 @@ class SupertokensTest(TestCase):
         self.assertEqual(session.get_user_id(), user_id)
 
         sleep(2)
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
@@ -77,7 +81,7 @@ class SupertokensTest(TestCase):
         try:
             supertokens.get_session(request, response, True)
             self.assertTrue(False)
-        except SuperTokensTryRefreshTokenException as e:
+        except SuperTokensTryRefreshTokenException:
             self.assertTrue(True)
 
         request = request = self.factory.get('/')
@@ -92,10 +96,11 @@ class SupertokensTest(TestCase):
         old_id_refresh_token_cookie = id_refresh_token_cookie
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -107,9 +112,11 @@ class SupertokensTest(TestCase):
         id_refresh_token_cookie = id_refresh_token_cookie.value
         self.assertNotEqual(access_token_cookie, old_access_token_cookie)
         self.assertNotEqual(refresh_token_cookie, old_refresh_token_cookie)
-        self.assertNotEqual(id_refresh_token_cookie, old_id_refresh_token_cookie)
+        self.assertNotEqual(id_refresh_token_cookie,
+                            old_id_refresh_token_cookie)
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
@@ -124,7 +131,7 @@ class SupertokensTest(TestCase):
         try:
             supertokens.get_session(request, response, True)
             self.assertTrue(False)
-        except SuperTokensTryRefreshTokenException as e:
+        except SuperTokensTryRefreshTokenException:
             self.assertTrue(True)
 
         request = request = self.factory.get('/')
@@ -135,13 +142,14 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensTokenTheftException as e:
+        except SuperTokensTokenTheftException:
             self.assertTrue(True)
-            
+
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
-        
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -167,18 +175,20 @@ class SupertokensTest(TestCase):
         update_settings(new_settings)
 
         user_id = 'userId'
-        jwt_payload = { 'a': 'a' }
-        session_data = { 'b': 'b' }
+        jwt_payload = {'a': 'a'}
+        session_data = {'b': 'b'}
 
         response = HttpResponse()
 
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(not response.has_header(ANTI_CSRF_HEADER_KEY))
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -206,7 +216,7 @@ class SupertokensTest(TestCase):
         try:
             supertokens.get_session(request, response, False)
             self.assertTrue(False)
-        except SuperTokensTryRefreshTokenException as e:
+        except SuperTokensTryRefreshTokenException:
             self.assertTrue(True)
 
         request = request = self.factory.get('/')
@@ -221,9 +231,10 @@ class SupertokensTest(TestCase):
         old_id_refresh_token_cookie = id_refresh_token_cookie
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(not response.has_header(ANTI_CSRF_HEADER_KEY))
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -235,7 +246,8 @@ class SupertokensTest(TestCase):
         id_refresh_token_cookie = id_refresh_token_cookie.value
         self.assertNotEqual(access_token_cookie, old_access_token_cookie)
         self.assertNotEqual(refresh_token_cookie, old_refresh_token_cookie)
-        self.assertNotEqual(id_refresh_token_cookie, old_id_refresh_token_cookie)
+        self.assertNotEqual(id_refresh_token_cookie,
+                            old_id_refresh_token_cookie)
 
         request = request = self.factory.get('/')
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
@@ -252,13 +264,14 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensTokenTheftException as e:
+        except SuperTokensTokenTheftException:
             self.assertTrue(True)
-            
+
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
-        
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -274,19 +287,21 @@ class SupertokensTest(TestCase):
 
     def test_revoke_session_without_blacklisting(self):
         user_id = 'userId'
-        jwt_payload = { 'a': 'a' }
-        session_data = { 'b': 'b' }
+        jwt_payload = {'a': 'a'}
+        session_data = {'b': 'b'}
 
         response = HttpResponse()
 
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -294,7 +309,8 @@ class SupertokensTest(TestCase):
         refresh_token_cookie = refresh_token_cookie.value
         id_refresh_token_cookie = id_refresh_token_cookie.value
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
@@ -304,7 +320,8 @@ class SupertokensTest(TestCase):
 
         session.revoke_session()
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
@@ -317,10 +334,11 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
@@ -333,19 +351,21 @@ class SupertokensTest(TestCase):
         }
         update_settings(new_settings)
         user_id = 'userId'
-        jwt_payload = { 'a': 'a' }
-        session_data = { 'b': 'b' }
+        jwt_payload = {'a': 'a'}
+        session_data = {'b': 'b'}
 
         response = HttpResponse()
 
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -353,7 +373,8 @@ class SupertokensTest(TestCase):
         refresh_token_cookie = refresh_token_cookie.value
         id_refresh_token_cookie = id_refresh_token_cookie.value
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
@@ -363,7 +384,8 @@ class SupertokensTest(TestCase):
 
         session.revoke_session()
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
@@ -376,34 +398,37 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
         try:
             supertokens.get_session(request, response, True)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
     def test_refresh_token_expired(self):
         user_id = 'userId'
-        jwt_payload = { 'a': 'a' }
-        session_data = { 'b': 'b' }
+        jwt_payload = {'a': 'a'}
+        session_data = {'b': 'b'}
 
         response = HttpResponse()
 
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -411,7 +436,8 @@ class SupertokensTest(TestCase):
         refresh_token_cookie = refresh_token_cookie.value
         id_refresh_token_cookie = id_refresh_token_cookie.value
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie
         response = HttpResponse()
@@ -429,13 +455,14 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
-            
+
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
-        
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -448,18 +475,20 @@ class SupertokensTest(TestCase):
 
     def test_revoke_all_sessions_without_blacklisting(self):
         user_id = 'userId'
-        jwt_payload = { 'a': 'a' }
-        session_data = { 'b': 'b' }
+        jwt_payload = {'a': 'a'}
+        session_data = {'b': 'b'}
 
         response = HttpResponse()
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token_1 = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -468,14 +497,16 @@ class SupertokensTest(TestCase):
         id_refresh_token_cookie_1 = id_refresh_token_cookie.value
 
         response = HttpResponse()
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token_2 = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -484,14 +515,16 @@ class SupertokensTest(TestCase):
         id_refresh_token_cookie_2 = id_refresh_token_cookie.value
 
         response = HttpResponse()
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token_3 = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -509,10 +542,11 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_1})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_1})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie_1
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie_1
         response = HttpResponse()
@@ -527,10 +561,11 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_2})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_2})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie_2
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie_2
         response = HttpResponse()
@@ -545,10 +580,11 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_3})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_3})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie_3
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie_3
         response = HttpResponse()
@@ -561,18 +597,20 @@ class SupertokensTest(TestCase):
         }
         update_settings(new_settings)
         user_id = 'userId'
-        jwt_payload = { 'a': 'a' }
-        session_data = { 'b': 'b' }
+        jwt_payload = {'a': 'a'}
+        session_data = {'b': 'b'}
 
         response = HttpResponse()
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token_1 = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -581,14 +619,16 @@ class SupertokensTest(TestCase):
         id_refresh_token_cookie_1 = id_refresh_token_cookie.value
 
         response = HttpResponse()
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token_2 = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -597,14 +637,16 @@ class SupertokensTest(TestCase):
         id_refresh_token_cookie_2 = id_refresh_token_cookie.value
 
         response = HttpResponse()
-        supertokens.create_new_session(response, user_id, jwt_payload, session_data)
+        supertokens.create_new_session(
+            response, user_id, jwt_payload, session_data)
 
         access_token_cookie = response.cookies.get(ACCESS_TOKEN_COOKIE_KEY)
         refresh_token_cookie = response.cookies.get(REFRESH_TOKEN_COOKIE_KEY)
-        id_refresh_token_cookie = response.cookies.get(ID_REFRESH_TOKEN_COOKIE_KEY)
+        id_refresh_token_cookie = response.cookies.get(
+            ID_REFRESH_TOKEN_COOKIE_KEY)
         self.assertTrue(response.has_header(ANTI_CSRF_HEADER_KEY))
         anti_csrf_token_3 = response.get(ANTI_CSRF_HEADER_KEY)
-        
+
         self.assertIsNotNone(access_token_cookie)
         self.assertIsNotNone(refresh_token_cookie)
         self.assertIsNotNone(id_refresh_token_cookie)
@@ -622,17 +664,18 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_1})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_1})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie_1
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie_1
         response = HttpResponse()
         try:
-            session = supertokens.get_session(request, response, True)
+            supertokens.get_session(request, response, True)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
         request = request = self.factory.get('/')
@@ -643,17 +686,18 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_2})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_2})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie_2
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie_2
         response = HttpResponse()
         try:
             supertokens.get_session(request, response, True)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
         request = request = self.factory.get('/')
@@ -664,16 +708,16 @@ class SupertokensTest(TestCase):
         try:
             supertokens.refresh_session(request, response)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
 
-        request = request = self.factory.get('/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_3})
+        request = request = self.factory.get(
+            '/', **{'HTTP_' + ANTI_CSRF_HEADER_KEY: anti_csrf_token_3})
         request.COOKIES[ACCESS_TOKEN_COOKIE_KEY] = access_token_cookie_3
         request.COOKIES[ID_REFRESH_TOKEN_COOKIE_KEY] = id_refresh_token_cookie_3
         response = HttpResponse()
         try:
             supertokens.get_session(request, response, True)
             self.assertTrue(False)
-        except SuperTokensUnauthorizedException as e:
+        except SuperTokensUnauthorizedException:
             self.assertTrue(True)
-        

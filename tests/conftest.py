@@ -2,7 +2,7 @@ def pytest_configure():
     from django.conf import settings
     import os
     os.environ.setdefault("SUPERTOKENS_MODE", "testing")
-    
+
     settings.configure(
         DEBUG_PROPAGATE_EXCEPTIONS=True,
         DATABASES={
@@ -11,6 +11,18 @@ def pytest_configure():
                 'NAME': ':memory:'
             }
         },
+        # mysql package: mysqlclient
+        # DATABASES={
+        #     'default': {
+        #         'ENGINE': 'django.db.backends.mysql',
+        #         'NAME': os.environ.get('DB_NAME', 'auth_session'),
+        #         'USER': os.environ.get('DB_USER', 'root'),
+        #         'PASSWORD': os.environ.get('DB_PASS', 'root'),
+        #         'HOST': '127.0.0.1',
+        #         'PORT': '3306',
+        #     }
+        # },
+        # postgres package: psycopg2
         # DATABASES={
         #     'default': {
         #         'ENGINE': 'django.db.backends.postgresql',

@@ -5,24 +5,30 @@ def raise_general_exception(msg, previous=None):
         raise SuperTokensGeneralException("General error") from msg
     raise SuperTokensGeneralException(msg) from previous
 
+
 def raise_token_theft_exception(user_id, session_handle):
     raise SuperTokensTokenTheftException(user_id, session_handle)
+
 
 def raise_try_refresh_roken_exception(msg):
     if isinstance(msg, SuperTokensException):
         raise msg
     raise SuperTokensTryRefreshTokenException(msg) from None
 
+
 def raise_unauthorized_exception(msg):
     if isinstance(msg, SuperTokensException):
         raise msg
     raise SuperTokensUnauthorizedException(msg) from None
 
+
 class SuperTokensException(Exception):
     pass
 
+
 class SuperTokensGeneralException(SuperTokensException):
     pass
+
 
 class SuperTokensTokenTheftException(SuperTokensException):
     def __init__(self, user_id, session_handle):
@@ -32,13 +38,14 @@ class SuperTokensTokenTheftException(SuperTokensException):
 
     def get_user_id(self):
         return self.user_id
-    
+
     def get_session_handle(self):
         return self.session_handle
+
 
 class SuperTokensUnauthorizedException(SuperTokensException):
     pass
 
+
 class SuperTokensTryRefreshTokenException(SuperTokensException):
     pass
- 

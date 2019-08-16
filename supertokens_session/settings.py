@@ -22,6 +22,7 @@ DEFAULTS = {
 
 supertokens_settings = APISettings(USER_SETTINGS, DEFAULTS)
 
+
 def reload_supertokens_settings(*args, **kwargs):  # pragma: no cover
     global supertokens_settings
 
@@ -29,4 +30,6 @@ def reload_supertokens_settings(*args, **kwargs):  # pragma: no cover
 
     if setting == 'SUPER_TOKENS':
         supertokens_settings = APISettings(value, DEFAULTS)
+
+
 setting_changed.connect(reload_supertokens_settings)

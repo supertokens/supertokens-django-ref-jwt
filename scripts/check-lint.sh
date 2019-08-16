@@ -1,0 +1,1 @@
+(cd .. && flake8 supertokens_session tests)

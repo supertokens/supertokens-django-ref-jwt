@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from math import floor
 from .exceptions import raise_general_exception, raise_unauthorized_exception
 
+
 class RefreshToken:
 
     @staticmethod
@@ -16,7 +17,7 @@ class RefreshToken:
 
             if len(splitted_token) > 2:
                 raise Exception("invalid refresh token")
-            
+
             nonce = splitted_token[1]
             payload = loads(decrypt(splitted_token[0], key))
             session_handle = sanitize_string(payload["sessionHandle"])
@@ -58,7 +59,7 @@ class RefreshToken:
             }
         except Exception as e:
             raise_general_exception(e)
-    
+
     @staticmethod
     def get_validity():
         from .settings import supertokens_settings

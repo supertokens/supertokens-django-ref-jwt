@@ -6,12 +6,13 @@ from .utils import generate_new_signing_key
 from .exceptions import raise_general_exception
 from os import environ
 
+
 class RefreshTokenSigningKey:
     __instance = None
 
     @staticmethod
     def get_instance():
-        if RefreshTokenSigningKey.__instance == None:
+        if RefreshTokenSigningKey.__instance is None:
             RefreshTokenSigningKey.__instance = RefreshTokenSigningKey()
         return RefreshTokenSigningKey.__instance
 
@@ -26,23 +27,24 @@ class RefreshTokenSigningKey:
         if self.key is None:
             self.key = self.__generate_new_key()
         return self.key
-    
+
     def __generate_new_key(self):
         try:
             with transaction.atomic():
                 try:
-                    key = SigningKey.objects.select_for_update().get(key_name=REFRESH_TOKEN_KEY_NAME_IN_DB)
-                except SigningKey.DoesNotExist as e:
+                    key = SigningKey.objects.select_for_update().get(
+                        key_name=REFRESH_TOKEN_KEY_NAME_IN_DB)
+                except SigningKey.DoesNotExist:
                     key = None
                 generate_new = False
-                
-                if key == None or generate_new:
+
+                if key is None or generate_new:
                     key_value = generate_new_signing_key()
                     created_at = datetime.now()
                     key = key_value
                     SigningKey.objects.update_or_create(
                         key_name=REFRESH_TOKEN_KEY_NAME_IN_DB,
-                        defaults= {
+                        defaults={
                             "key_value": key_value,
                             "created_at": created_at
                         }
@@ -52,10 +54,12 @@ class RefreshTokenSigningKey:
             return key
         except Exception as e:
             raise_general_exception(e)
-    
+
     @staticmethod
     def reset_instance():
         if environ.get("SUPERTOKENS_MODE", "dev") != "testing":
-            raise_general_exception('function should only be called during testing')
-        SigningKey.objects.filter(key_name=REFRESH_TOKEN_KEY_NAME_IN_DB).delete()
+            raise_general_exception(
+                'function should only be called during testing')
+        SigningKey.objects.filter(
+            key_name=REFRESH_TOKEN_KEY_NAME_IN_DB).delete()
         RefreshTokenSigningKey.__instance = None

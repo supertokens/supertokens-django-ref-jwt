@@ -13,10 +13,12 @@ _header = base64encode(dumps({
     "typ": "JWT"
 }))
 
+
 def encode(plaintext_payload, signingkey):
     payload = base64encode(dumps(plaintext_payload))
     signature = hmac_hex_digest(signingkey, _header + "." + payload)
     return _header + "." + payload + "." + signature
+
 
 def decode(jwt, signingkey):
     splitted_input = jwt.split(".")

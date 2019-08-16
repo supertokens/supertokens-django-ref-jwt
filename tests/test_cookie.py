@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.test import TestCase, RequestFactory
 from datetime import datetime, timedelta
 
+
 class CookieTest(TestCase):
 
     def setUp(self):
@@ -19,8 +20,10 @@ class CookieTest(TestCase):
         secure = True
         httponly = True
 
-        cookie.set_cookie(response, key, value, expires.timestamp(), path, domain, secure, httponly)
-        cookie_obj = response.cookies.get(key) # will return None if no cookie with this key is found
+        cookie.set_cookie(response, key, value,
+                          expires.timestamp(), path, domain, secure, httponly)
+        # will return None if no cookie with this key is found
+        cookie_obj = response.cookies.get(key)
         self.assertIsNotNone(cookie_obj)
         # value property is directly available on cookie object
         # for other attributes, they are stored as dict in cookie object
@@ -36,7 +39,8 @@ class CookieTest(TestCase):
         self.assertEqual(cookie_obj['domain'], domain)
         self.assertEqual(cookie_obj['httponly'], secure)
         self.assertEqual(cookie_obj['secure'], httponly)
-        self.assertEqual(cookie_obj['expires'], expires.strftime('%a, %d %b %Y %H:%M:%S GMT'))
+        self.assertEqual(cookie_obj['expires'], expires.strftime(
+            '%a, %d %b %Y %H:%M:%S GMT'))
 
     def test_get_cookie(self):
         key = 'test'
