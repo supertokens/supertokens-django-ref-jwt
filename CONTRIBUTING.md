@@ -19,7 +19,7 @@ Please only issue pull requests to the dev branch.
 
 2) Install additional development dependencies
     ```bash
-    pip install pytest pytest jsonschema flake8 autopep8
+    make dev-install
     ```
 
 3) Set-up hooks
@@ -52,6 +52,7 @@ All other issues like quote styles, spacing etc.. will be taken care of by the f
 1) Run the make lint command
     ```bash
     make lint
+    make check-lint
     ```
 
 ## Pre push

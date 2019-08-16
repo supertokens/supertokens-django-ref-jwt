@@ -3,6 +3,7 @@ help:
 	@echo "        \x1b[33;1mtest: \x1b[0mruns pytest"
 	@echo "        \x1b[33;1mlint: \x1b[0mformat code using autopep8"
 	@echo "\x1b[33;1mset-up-hooks: \x1b[0mset up various git hooks"
+	@echo " \x1b[33;1mdev-install: \x1b[0minstall all packages required for development"
 	@echo "        \x1b[33;1mhelp: \x1b[0mprints this"
 
 lint:
@@ -17,3 +18,6 @@ set-up-hooks:
 
 test:
 	pytest
+
+dev-install:
+	pip install django djangorestframework pycryptodome pytest pytest-django jsonschema autopep8 flake8
