@@ -2,6 +2,7 @@ from supertokens_session import cookie
 from django.http import HttpResponse
 from django.test import TestCase, RequestFactory
 from datetime import datetime, timedelta
+from supertokens_session.utils import get_timezone
 
 
 class CookieTest(TestCase):
@@ -14,7 +15,7 @@ class CookieTest(TestCase):
 
         key = 'test'
         value = 'value'
-        expires = datetime.now() + timedelta(seconds=60)
+        expires = datetime.now(tz=get_timezone()) + timedelta(seconds=60)
         path = '/'
         domain = 'localhost'
         secure = True

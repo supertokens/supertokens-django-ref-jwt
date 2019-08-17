@@ -7,6 +7,8 @@ from uuid import uuid4
 from Crypto.Cipher import AES
 from json import dumps, loads
 from .exceptions import raise_general_exception
+from django.conf import settings
+from django.utils import timezone
 
 
 def base64encode(s):
@@ -123,3 +125,7 @@ def unserialize_user_id(user_id):
     except Exception:
         pass
     return user_id
+
+
+def get_timezone():
+    return timezone.utc if settings.USE_TZ else None

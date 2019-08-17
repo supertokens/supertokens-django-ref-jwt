@@ -1,6 +1,7 @@
 from .utils import (
     generate_uuid,
     custom_hash,
+    get_timezone,
     serialize_data,
     unserialize_data,
     serialize_user_id,
@@ -31,7 +32,7 @@ def create_new_session(user_id, jwt_payload, session_data):
             refresh_token['token']), anti_csrf_token, None, jwt_payload)
 
         session_in_db = RefreshTokenModel(session_handle=session_handle, user_id=serialize_user_id(user_id), refresh_token_hash_2=custom_hash(custom_hash(
-            refresh_token['token'])), session_data=serialize_data(session_data), expires_at=datetime.fromtimestamp(refresh_token['expires_at']), jwt_payload=serialize_data(jwt_payload))
+            refresh_token['token'])), session_data=serialize_data(session_data), expires_at=datetime.fromtimestamp(refresh_token['expires_at'], tz=get_timezone()), jwt_payload=serialize_data(jwt_payload))
         session_in_db.save()
 
         return {
@@ -97,7 +98,7 @@ def get_session(access_token, anti_csrf_token=None):
             if promote_bool or session_info.refresh_token_hash_2 == custom_hash(access_token_info['refresh_token_hash_1']):
                 if promote_bool:
                     refresh_token_validity = RefreshToken.get_validity()
-                    current_datetime = datetime.now()
+                    current_datetime = datetime.now(tz=get_timezone())
                     expires_at = current_datetime + refresh_token_validity
                     RefreshTokenModel.objects.filter(session_handle=session_handle).update(
                         refresh_token_hash_2=custom_hash(access_token_info['refresh_token_hash_1']), expires_at=expires_at)
@@ -133,7 +134,7 @@ def refresh_session(refresh_token):
         with transaction.atomic():
             session_info = RefreshTokenModel.objects.select_for_update().get(
                 session_handle=session_handle)
-            current_datetime = datetime.now()
+            current_datetime = datetime.now(tz=get_timezone())
             if session_info.expires_at < current_datetime:
                 raise_unauthorized_exception(
                     'session does not exist or is expired')
@@ -172,7 +173,7 @@ def refresh_session(refresh_token):
 
             if refresh_token_info['parent_refresh_token_hash_1'] is not None and custom_hash(refresh_token_info['parent_refresh_token_hash_1']) == session_info.refresh_token_hash_2:
                 refresh_token_validity = RefreshToken.get_validity()
-                current_datetime = datetime.now()
+                current_datetime = datetime.now(tz=get_timezone())
                 expires_at = current_datetime + refresh_token_validity
                 RefreshTokenModel.objects.filter(session_handle=session_handle).update(
                     refresh_token_hash_2=custom_hash(custom_hash(refresh_token)), expires_at=expires_at)
@@ -240,4 +241,4 @@ def revoke_session(session_handle):
 
 
 def remove_expired_tokens():
-    return RefreshTokenModel.objects.filter(expires_at__lte=datetime.now()).delete()
+    return RefreshTokenModel.objects.filter(expires_at__lte=datetime.now(tz=get_timezone())).delete()

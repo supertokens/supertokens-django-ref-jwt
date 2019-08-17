@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from .models import SigningKey
 from django.db import transaction
 from .constant import ACCESS_TOKEN_SIGNING_KEY_NAME_IN_DB
-from .utils import generate_new_signing_key
+from .utils import generate_new_signing_key, get_timezone
 from .exceptions import raise_general_exception
 from os import environ
 
@@ -40,7 +40,7 @@ class AccessTokenSigningKey:
             self.key = new_key["key_value"]
             self.created_at = new_key["created_at"]
 
-        current_datetime = datetime.now()
+        current_datetime = datetime.now(tz=get_timezone())
 
         if self.is_dynamic and current_datetime > (self.created_at + self.update_interval):
             new_key = self.__generate_new_key()
@@ -60,13 +60,13 @@ class AccessTokenSigningKey:
                 generate_new = False
 
                 if key is not None:
-                    current_datetime = datetime.now()
+                    current_datetime = datetime.now(tz=get_timezone())
                     if self.is_dynamic and current_datetime > (key.created_at + self.update_interval):
                         generate_new = True
 
                 if key is None or generate_new:
                     key_value = generate_new_signing_key()
-                    created_at = datetime.now()
+                    created_at = datetime.now(tz=get_timezone())
                     key = {
                         "key_value": key_value,
                         "created_at": created_at

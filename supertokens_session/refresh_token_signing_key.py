@@ -2,7 +2,7 @@ from datetime import datetime
 from .models import SigningKey
 from django.db import transaction
 from .constant import REFRESH_TOKEN_KEY_NAME_IN_DB
-from .utils import generate_new_signing_key
+from .utils import generate_new_signing_key, get_timezone
 from .exceptions import raise_general_exception
 from os import environ
 
@@ -40,7 +40,7 @@ class RefreshTokenSigningKey:
 
                 if key is None or generate_new:
                     key_value = generate_new_signing_key()
-                    created_at = datetime.now()
+                    created_at = datetime.now(tz=get_timezone())
                     key = key_value
                     SigningKey.objects.update_or_create(
                         key_name=REFRESH_TOKEN_KEY_NAME_IN_DB,

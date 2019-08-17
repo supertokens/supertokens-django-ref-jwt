@@ -6,6 +6,7 @@ from .constant import (
 )
 from .exceptions import raise_general_exception
 from datetime import datetime
+from .utils import get_timezone
 
 
 def set_options_api_headers(response):
@@ -34,7 +35,7 @@ def get_cookie(request, key):
 
 def set_cookie(response, key, value, expires, path, domain, secure, httponly):
     response.set_cookie(key=key, value=value, expires=datetime.fromtimestamp(
-        expires), path=path, domain=domain, secure=secure, httponly=httponly)
+        expires, tz=get_timezone()), path=path, domain=domain, secure=secure, httponly=httponly)
 
 
 def attach_anti_csrf_header_if_required(response, value):
