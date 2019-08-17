@@ -59,7 +59,7 @@ def pytest_configure():
             'django.contrib.staticfiles',
 
             'rest_framework',
-            'supertokens_session',
+            'supertokens_jwt_ref',
             'tests',
         ),
         PASSWORD_HASHERS=(

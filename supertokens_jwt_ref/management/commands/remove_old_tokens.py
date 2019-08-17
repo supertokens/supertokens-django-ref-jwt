@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from supertokens_session.session_helper import remove_expired_tokens
+from supertokens_jwt_ref.session_helper import remove_expired_tokens
 
 
 class Command(BaseCommand):

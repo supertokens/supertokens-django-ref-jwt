@@ -1,4 +1,4 @@
-from supertokens_session.settings import reload_supertokens_settings
+from supertokens_jwt_ref.settings import reload_supertokens_settings
 
 
 def set_default_settings():

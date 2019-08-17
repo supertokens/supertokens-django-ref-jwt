@@ -1,17 +1,17 @@
 from django.test import TestCase, RequestFactory
 from django.http import HttpResponse
 from .utils import set_default_settings, update_settings
-from supertokens_session.refresh_token_signing_key import RefreshTokenSigningKey
-from supertokens_session.access_token_singingkey import AccessTokenSigningKey
-from supertokens_session import supertokens
-from supertokens_session.constant import (
+from supertokens_jwt_ref.refresh_token_signing_key import RefreshTokenSigningKey
+from supertokens_jwt_ref.access_token_singingkey import AccessTokenSigningKey
+from supertokens_jwt_ref import supertokens
+from supertokens_jwt_ref.constant import (
     ANTI_CSRF_HEADER_KEY,
     ACCESS_TOKEN_COOKIE_KEY,
     REFRESH_TOKEN_COOKIE_KEY,
     ID_REFRESH_TOKEN_COOKIE_KEY
 )
 from time import sleep
-from supertokens_session.exceptions import (
+from supertokens_jwt_ref.exceptions import (
     SuperTokensTokenTheftException,
     SuperTokensUnauthorizedException,
     SuperTokensTryRefreshTokenException

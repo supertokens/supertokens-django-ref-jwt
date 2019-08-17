@@ -1,4 +1,4 @@
-from supertokens_session import jwt
+from supertokens_jwt_ref import jwt
 from django.test import TestCase
 
 

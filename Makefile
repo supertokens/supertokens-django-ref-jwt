@@ -7,10 +7,10 @@ help:
 	@echo "        \x1b[33;1mhelp: \x1b[0mprints this"
 
 lint:
-	autopep8 -r -i -a supertokens_session tests
+	autopep8 -r -i -a supertokens_jwt_ref tests
 
 check-lint:
-	flake8 supertokens_session tests
+	flake8 supertokens_jwt_ref tests
 
 set-up-hooks:
 	cp hooks/pre-commit.sh .git/hooks/pre-commit

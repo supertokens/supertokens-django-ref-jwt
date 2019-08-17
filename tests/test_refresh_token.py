@@ -1,8 +1,8 @@
 from django.test import TestCase
-from supertokens_session.refresh_token import RefreshToken
-from supertokens_session.refresh_token_signing_key import RefreshTokenSigningKey
+from supertokens_jwt_ref.refresh_token import RefreshToken
+from supertokens_jwt_ref.refresh_token_signing_key import RefreshTokenSigningKey
 from .utils import set_default_settings
-from supertokens_session.exceptions import SuperTokensUnauthorizedException
+from supertokens_jwt_ref.exceptions import SuperTokensUnauthorizedException
 
 
 class RefreshTokenTest(TestCase):

@@ -1,9 +1,9 @@
 from django.test import TestCase
-from supertokens_session.access_token import AccessToken
-from supertokens_session.access_token_singingkey import AccessTokenSigningKey
+from supertokens_jwt_ref.access_token import AccessToken
+from supertokens_jwt_ref.access_token_singingkey import AccessTokenSigningKey
 from .utils import set_default_settings, update_settings
 from time import sleep
-from supertokens_session.exceptions import SuperTokensTryRefreshTokenException
+from supertokens_jwt_ref.exceptions import SuperTokensTryRefreshTokenException
 
 
 class AccessTokenTest(TestCase):

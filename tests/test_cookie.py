@@ -1,8 +1,8 @@
-from supertokens_session import cookie
+from supertokens_jwt_ref import cookie
 from django.http import HttpResponse
 from django.test import TestCase, RequestFactory
 from datetime import datetime, timedelta
-from supertokens_session.utils import get_timezone
+from supertokens_jwt_ref.utils import get_timezone
 
 
 class CookieTest(TestCase):

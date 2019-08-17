@@ -1,5 +1,5 @@
 from django.test import TestCase
-from supertokens_session.session_helper import (
+from supertokens_jwt_ref.session_helper import (
     revoke_all_sessions_for_user,
     remove_expired_tokens,
     update_session_data,
@@ -9,10 +9,10 @@ from supertokens_session.session_helper import (
     revoke_session,
     get_session
 )
-from supertokens_session.refresh_token_signing_key import RefreshTokenSigningKey
-from supertokens_session.access_token_singingkey import AccessTokenSigningKey
-from supertokens_session.models import RefreshToken as RefreshTokenModel
-from supertokens_session.utils import base64encode
+from supertokens_jwt_ref.refresh_token_signing_key import RefreshTokenSigningKey
+from supertokens_jwt_ref.access_token_singingkey import AccessTokenSigningKey
+from supertokens_jwt_ref.models import RefreshToken as RefreshTokenModel
+from supertokens_jwt_ref.utils import base64encode
 from .utils import set_default_settings, update_settings
 from .schema import (
     schema_new_session_get,
@@ -25,7 +25,7 @@ from .schema import (
 from jsonschema import validate
 from time import sleep
 from json import dumps
-from supertokens_session.exceptions import (
+from supertokens_jwt_ref.exceptions import (
     SuperTokensTokenTheftException,
     SuperTokensUnauthorizedException,
     SuperTokensTryRefreshTokenException

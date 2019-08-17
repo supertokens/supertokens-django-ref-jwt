@@ -18,9 +18,10 @@ extras_require = {
 }
 
 setup(
-    name = "supertokens_session",
+    name = "supertokens_jwt_ref",
     version = "0.0.1",
     author = "Bhumil Sarvaiya",
+    license = "MIT",
     author_email = "sarvaiyabhumil@gmail.com",
     description = "Supertokens package for python (DRF)",
     long_description = long_description,
