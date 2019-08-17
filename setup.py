@@ -19,14 +19,14 @@ extras_require = {
 
 setup(
     name = "supertokens_session",
-    verion = "0.0.1",
+    version = "0.0.1",
     author = "Bhumil Sarvaiya",
     author_email = "sarvaiyabhumil@gmail.com",
     description = "Supertokens package for python (DRF)",
     long_description = long_description,
     long_description_content_type = "text/markdown",
     url = "https://github.com/supertokens/supertokens-django-ref-jwt",
-    packages = find_packages(exclude=["contrib", "docs", "tests*", "tests", "licenses", "requirements"]),
+    packages = find_packages(exclude=["contrib", "docs", "tests*", "licenses", "requirements"]),
     classifiers = [
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Build Tools :: Session Management",
