@@ -5,7 +5,8 @@ from .utils import (
     serialize_data,
     unserialize_data,
     serialize_user_id,
-    unserialize_user_id
+    unserialize_user_id,
+    assert_user_id_has_correct_format
 )
 from .refresh_token import RefreshToken
 from .access_token import AccessToken
@@ -22,7 +23,7 @@ from .exceptions import (
 
 def create_new_session(user_id, jwt_payload, session_info):
     from .settings import supertokens_settings
-
+    assert_user_id_has_correct_format(user_id)
     try:
         session_handle = generate_uuid()
         refresh_token = RefreshToken.create_new_refresh_token(
@@ -99,9 +100,11 @@ def get_session(access_token, anti_csrf_token=None):
                 if promote_bool:
                     refresh_token_validity = RefreshToken.get_validity()
                     current_datetime = datetime.now(tz=get_timezone())
-                    expires_at = current_datetime + refresh_token_validity
+                    expires_at = refresh_token_validity + current_datetime
                     RefreshTokenModel.objects.filter(session_handle=session_handle).update(
                         refresh_token_hash_2=custom_hash(access_token_info['refresh_token_hash_1']), expires_at=expires_at)
+
+                # TODO: Bhumil. somehow commit here?
 
                 new_access_token = AccessToken.create_new_access_token(
                     session_handle, access_token_info['user_id'], access_token_info['refresh_token_hash_1'], access_token_info['anti_csrf_token'], None, access_token_info['user_payload'])
