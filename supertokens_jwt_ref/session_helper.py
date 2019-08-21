@@ -16,7 +16,7 @@ from .exceptions import (
     raise_general_exception,
     raise_token_theft_exception,
     raise_unauthorized_exception,
-    raise_try_refresh_roken_exception
+    raise_try_refresh_token_exception
 )
 
 
@@ -69,7 +69,7 @@ def get_session(access_token, anti_csrf_token=None):
 
         anti_csrf_token = anti_csrf_token if supertokens_settings.ANTI_CSRF_ENABLE else None
         if anti_csrf_token is not None and anti_csrf_token != access_token_info['anti_csrf_token']:
-            raise_try_refresh_roken_exception("anti-csrf check failed")
+            raise_try_refresh_token_exception("anti-csrf check failed")
 
         enable_blacklisting = supertokens_settings.ACCESS_TOKEN_ENABLE_BLACKLISTING
 

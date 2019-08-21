@@ -17,7 +17,7 @@ from .exceptions import (
     raise_unauthorized_exception,
     SuperTokensTokenTheftException,
     SuperTokensUnauthorizedException,
-    raise_try_refresh_roken_exception
+    raise_try_refresh_token_exception
 )
 
 
@@ -48,7 +48,7 @@ def get_session(request, response, enable_csrf_protection):
 
     access_token = get_access_token_from_cookie(request)
     if access_token is None:
-        raise_try_refresh_roken_exception('access token missing in cookies')
+        raise_try_refresh_token_exception('access token missing in cookies')
 
     try:
         from .settings import supertokens_settings
@@ -57,7 +57,7 @@ def get_session(request, response, enable_csrf_protection):
             request) if enable_csrf_protection else None
 
         if anti_csrf_token is None and enable_csrf_protection:
-            raise_try_refresh_roken_exception('anti csrf token is missing')
+            raise_try_refresh_token_exception('anti csrf token is missing')
         session = session_helper.get_session(access_token, anti_csrf_token)
         if 'new_access_token' in session:
             attach_access_token_to_cookie(

@@ -36,9 +36,8 @@ class RefreshTokenSigningKey:
                         key_name=REFRESH_TOKEN_KEY_NAME_IN_DB)
                 except SigningKey.DoesNotExist:
                     key = None
-                generate_new = False
 
-                if key is None or generate_new:
+                if key is None:
                     key_value = generate_new_signing_key()
                     created_at = datetime.now(tz=get_timezone())
                     key = key_value

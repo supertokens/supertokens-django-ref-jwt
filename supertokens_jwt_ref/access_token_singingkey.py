@@ -22,6 +22,8 @@ class AccessTokenSigningKey:
         self.update_interval = timedelta(
             seconds=get_access_token_signing_key_update_interval())
         self.user_get_key = supertokens_settings.ACCESS_TOKEN_SIGNING_KEY_GET_FUNCTION
+        self.key = None
+        self.created_at = None
 
     @staticmethod
     def get_key():
@@ -35,7 +37,7 @@ class AccessTokenSigningKey:
                 raise_general_exception(
                     'Exception thrown from user provided function to get access token signing key', e)
 
-        if not hasattr(self, "key") or self.key is None:
+        if self.key is None:
             new_key = self.__generate_new_key()
             self.key = new_key["key_value"]
             self.created_at = new_key["created_at"]

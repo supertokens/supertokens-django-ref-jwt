@@ -2,7 +2,7 @@ def raise_general_exception(msg, previous=None):
     if isinstance(msg, SuperTokensException):
         raise msg
     elif isinstance(msg, Exception):
-        raise SuperTokensGeneralException("General error") from msg
+        raise SuperTokensGeneralException(msg) from None
     raise SuperTokensGeneralException(msg) from previous
 
 
@@ -10,7 +10,7 @@ def raise_token_theft_exception(user_id, session_handle):
     raise SuperTokensTokenTheftException(user_id, session_handle)
 
 
-def raise_try_refresh_roken_exception(msg):
+def raise_try_refresh_token_exception(msg):
     if isinstance(msg, SuperTokensException):
         raise msg
     raise SuperTokensTryRefreshTokenException(msg) from None
