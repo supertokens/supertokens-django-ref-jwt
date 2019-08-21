@@ -1,5 +1,8 @@
 from . import session_helper
 from .cookie_and_header import clear_session_from_cookie
+from .exceptions import (
+    SuperTokensUnauthorizedException,
+)
 
 
 class Session:
@@ -16,14 +19,14 @@ class Session:
     def get_session_info(self):
         try:
             return session_helper.get_session_info(self.__session_handle)
-        except Exception as e:
+        except SuperTokensUnauthorizedException as e:
             clear_session_from_cookie(self.__response)
             raise e
 
     def update_session_info(self, new_session_info):
         try:
             return session_helper.update_session_info(self.__session_handle, new_session_info)
-        except Exception as e:
+        except SuperTokensUnauthorizedException as e:
             clear_session_from_cookie(self.__response)
             raise e
 

@@ -1,5 +1,4 @@
 from .cookie_and_header import (
-    set_header,
     get_anti_csrf_header,
     set_options_api_headers,
     clear_session_from_cookie,
@@ -22,7 +21,6 @@ from .exceptions import (
 
 
 def create_new_session(response, user_id, jwt_payload=None, session_info=None):
-    set_header(response, 'ACCESS-CONTROL-ALLOW-CREDENTIALS', 'true')
     new_session = session_helper.create_new_session(
         user_id, jwt_payload, session_info)
 
@@ -39,7 +37,6 @@ def create_new_session(response, user_id, jwt_payload=None, session_info=None):
 
 
 def get_session(request, response, enable_csrf_protection):
-    set_header(response, 'ACCESS-CONTROL-ALLOW-CREDENTIALS', 'true')
     id_refresh_token = get_id_refresh_token_from_cookie(request)
 
     if id_refresh_token is None:
@@ -59,7 +56,7 @@ def get_session(request, response, enable_csrf_protection):
         if anti_csrf_token is None and enable_csrf_protection:
             raise_try_refresh_token_exception('anti csrf token is missing')
         session = session_helper.get_session(access_token, anti_csrf_token)
-        if 'new_access_token' in session:
+        if session['new_access_token'] is not None:
             attach_access_token_to_cookie(
                 response, session['new_access_token']['value'], session['new_access_token']['expires_at'])
         return Session(session['session']['handle'], session['session']['user_id'], session['session']['jwt_payload'], response)
@@ -69,11 +66,10 @@ def get_session(request, response, enable_csrf_protection):
 
 
 def refresh_session(request, response):
-    set_header(response, 'ACCESS-CONTROL-ALLOW-CREDENTIALS', 'true')
     refresh_token = get_refresh_token_from_cookie(request)
     id_refresh_token = get_id_refresh_token_from_cookie(request)
 
-    if id_refresh_token is None:
+    if id_refresh_token is None or refresh_token is None:
         clear_session_from_cookie(response)
         raise_unauthorized_exception('missing auth tokens in cookies')
 
@@ -107,15 +103,15 @@ def get_all_session_handles_for_user(user_id):
 
 
 def revoke_session(session_handle):
-    session_helper.revoke_session(session_handle)
+    return session_helper.revoke_session(session_handle)
 
 
 def get_session_info(session_handle):
     return session_helper.get_session_info(session_handle)
 
 
-def update_session_info(session_handle, new_session_info=None):
-    session_helper.update_session_info(session_handle, new_session_info)
+def update_session_info(session_handle, new_session_info):
+    return session_helper.update_session_info(session_handle, new_session_info)
 
 
 def set_headers_for_options_api(response):

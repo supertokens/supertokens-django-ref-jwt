@@ -33,6 +33,9 @@ definitions = {
     },
     'anti_csrf_null': {
         'type': 'null'
+    },
+    'none': {
+        'type': ['null']
     }
 }
 
@@ -91,9 +94,10 @@ schema_refresh_session_ACT_disabled = {
 schema_new_session_get = {
     'type': 'object',
     'properties': {
-        'session': definitions['session']
+        'session': definitions['session'],
+        'new_access_token': definitions['none']
     },
-    'required': ['session'],
+    'required': ['session', 'new_access_token'],
     'additionalProperties': False
 }
 

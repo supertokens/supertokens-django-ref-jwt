@@ -89,7 +89,8 @@ def get_session(access_token, anti_csrf_token=None):
                     'handle': access_token_info['session_handle'],
                     'user_id': access_token_info['user_id'],
                     'jwt_payload': access_token_info['user_payload']
-                }
+                },
+                'new_access_token': None
             }
 
         with transaction.atomic():
