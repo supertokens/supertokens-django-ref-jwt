@@ -23,6 +23,10 @@ DEFAULTS = {
 supertokens_settings = APISettings(USER_SETTINGS, DEFAULTS)
 
 
+def get_access_token_signing_key_update_interval():
+    return supertokens_settings.ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL * 60 * 60
+
+
 def reload_supertokens_settings(*args, **kwargs):  # pragma: no cover
     global supertokens_settings
 

@@ -11,7 +11,7 @@ class RefreshTokenSigningKey:
     __instance = None
 
     @staticmethod
-    def get_instance():
+    def __get_instance():
         if RefreshTokenSigningKey.__instance is None:
             RefreshTokenSigningKey.__instance = RefreshTokenSigningKey()
         return RefreshTokenSigningKey.__instance
@@ -21,7 +21,7 @@ class RefreshTokenSigningKey:
 
     @staticmethod
     def get_key():
-        return RefreshTokenSigningKey.get_instance().__get_key_from_instance()
+        return RefreshTokenSigningKey.__get_instance().__get_key_from_instance()
 
     def __get_key_from_instance(self):
         if self.key is None:

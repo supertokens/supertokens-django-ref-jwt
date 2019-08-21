@@ -11,21 +11,21 @@ class AccessTokenSigningKey:
     __instance = None
 
     @staticmethod
-    def get_instance():
+    def __get_instance():
         if AccessTokenSigningKey.__instance is None:
             AccessTokenSigningKey.__instance = AccessTokenSigningKey()
         return AccessTokenSigningKey.__instance
 
     def __init__(self):
-        from .settings import supertokens_settings
+        from .settings import supertokens_settings, get_access_token_signing_key_update_interval
         self.is_dynamic = supertokens_settings.ACCESS_TOKEN_SIGNING_KEY_IS_DYNAMIC
         self.update_interval = timedelta(
-            seconds=supertokens_settings.ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL * 60 * 60)
+            seconds=get_access_token_signing_key_update_interval())
         self.user_get_key = supertokens_settings.ACCESS_TOKEN_SIGNING_KEY_GET_FUNCTION
 
     @staticmethod
     def get_key():
-        return AccessTokenSigningKey.get_instance().__get_key_from_instance()
+        return AccessTokenSigningKey.__get_instance().__get_key_from_instance()
 
     def __get_key_from_instance(self):
         if self.user_get_key is not None:
