@@ -2,9 +2,9 @@ from django.test import TestCase
 from supertokens_jwt_ref.session_helper import (
     revoke_all_sessions_for_user,
     remove_expired_tokens,
-    update_session_data,
+    update_session_info,
     create_new_session,
-    get_session_data,
+    get_session_info,
     refresh_session,
     revoke_session,
     get_session
@@ -101,7 +101,7 @@ class SessionTest(TestCase):
             session['access_token']['value'], session['anti_csrf_token'])
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
 
         jwt_payload = 'testing'
@@ -113,7 +113,7 @@ class SessionTest(TestCase):
             session['access_token']['value'], session['anti_csrf_token'])
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
 
         jwt_payload = True
@@ -125,7 +125,7 @@ class SessionTest(TestCase):
             session['access_token']['value'], session['anti_csrf_token'])
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
 
         jwt_payload = [1, 2, 3, 'a', 'b', 'c']
@@ -137,7 +137,7 @@ class SessionTest(TestCase):
             session['access_token']['value'], session['anti_csrf_token'])
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
 
         jwt_payload = None
@@ -149,7 +149,7 @@ class SessionTest(TestCase):
             session['access_token']['value'], session['anti_csrf_token'])
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
 
     def test_create_and_get_session_AT_expires_1_sec(self):
@@ -248,14 +248,14 @@ class SessionTest(TestCase):
         validate(new_refreshed_session, schema_refresh_session_ACT_enabled)
         self.assertEqual(
             new_refreshed_session['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             new_refreshed_session['session']['handle']), session_data)
 
         session_info = get_session(
             new_refreshed_session['new_access_token']['value'], new_refreshed_session['new_anti_csrf_token'])
         validate(session_info, schema_updated_access_token_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
         self.assertNotEqual(
             session_info['new_access_token'], new_refreshed_session['new_access_token']['value'])
@@ -265,7 +265,7 @@ class SessionTest(TestCase):
             session_info['new_access_token']['value'], new_refreshed_session['new_anti_csrf_token'])
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
 
         sleep(1.5)
@@ -281,14 +281,14 @@ class SessionTest(TestCase):
         validate(new_refreshed_session, schema_refresh_session_ACT_enabled)
         self.assertEqual(
             new_refreshed_session['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             new_refreshed_session['session']['handle']), session_data)
 
         session_info = get_session(
             new_refreshed_session['new_access_token']['value'], new_refreshed_session['new_anti_csrf_token'])
         validate(session_info, schema_updated_access_token_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
         self.assertNotEqual(
             session_info['new_access_token'], new_refreshed_session['new_access_token']['value'])
@@ -319,14 +319,14 @@ class SessionTest(TestCase):
         validate(new_refreshed_session, schema_refresh_session_ACT_disabled)
         self.assertEqual(
             new_refreshed_session['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             new_refreshed_session['session']['handle']), session_data)
 
         session_info = get_session(
             new_refreshed_session['new_access_token']['value'])
         validate(session_info, schema_updated_access_token_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
         self.assertNotEqual(
             session_info['new_access_token'], new_refreshed_session['new_access_token']['value'])
@@ -335,7 +335,7 @@ class SessionTest(TestCase):
         session_info = get_session(session_info['new_access_token']['value'])
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
 
         sleep(1.5)
@@ -351,14 +351,14 @@ class SessionTest(TestCase):
         validate(new_refreshed_session, schema_refresh_session_ACT_disabled)
         self.assertEqual(
             new_refreshed_session['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             new_refreshed_session['session']['handle']), session_data)
 
         session_info = get_session(
             new_refreshed_session['new_access_token']['value'])
         validate(session_info, schema_updated_access_token_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
-        self.assertEqual(get_session_data(
+        self.assertEqual(get_session_info(
             session_info['session']['handle']), session_data)
         self.assertNotEqual(
             session_info['new_access_token'], new_refreshed_session['new_access_token']['value'])
@@ -477,7 +477,7 @@ class SessionTest(TestCase):
         except Exception:
             self.assertTrue(True)
 
-    def test_update_session_data(self):
+    def test_update_session_info(self):
         user_id = 'userId'
         jwt_payload = {'a': 'a'}
         session_data = {'b': 'b'}
@@ -485,14 +485,14 @@ class SessionTest(TestCase):
         session = create_new_session(user_id, jwt_payload, session_data)
         validate(session, schema_create_new_session_ACT_enabled)
 
-        session_data_db = get_session_data(session['session']['handle'])
+        session_data_db = get_session_info(session['session']['handle'])
         self.assertEqual(session_data_db, session_data)
 
-        new_session_data = 44
-        self.assertTrue(update_session_data(
-            session['session']['handle'], new_session_data))
-        session_data_db = get_session_data(session['session']['handle'])
-        self.assertEqual(session_data_db, new_session_data)
+        new_session_info = 44
+        self.assertTrue(update_session_info(
+            session['session']['handle'], new_session_info))
+        session_data_db = get_session_info(session['session']['handle'])
+        self.assertEqual(session_data_db, new_session_info)
 
     def test_revoke_session_without_blacklisting(self):
         user_id = 'userId'

@@ -9,7 +9,7 @@ class SigningKey(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = "supertokens_signing_key"
+        db_table = "signing_key"
 
 
 class RefreshToken(models.Model):
@@ -19,9 +19,9 @@ class RefreshToken(models.Model):
     user_id = models.CharField(max_length=128, null=False, editable=True)
     refresh_token_hash_2 = models.CharField(
         max_length=128, null=False, editable=True)
-    session_data = models.TextField(editable=True)
+    session_info = models.TextField(editable=True)
     expires_at = models.DateTimeField()
     jwt_payload = models.TextField(null=False)
 
     class Meta:
-        db_table = "supertokens_refresh_token"
+        db_table = "refresh_token"

@@ -21,10 +21,10 @@ from .exceptions import (
 )
 
 
-def create_new_session(response, user_id, jwt_payload=None, session_data=None):
+def create_new_session(response, user_id, jwt_payload=None, session_info=None):
     set_header(response, 'ACCESS-CONTROL-ALLOW-CREDENTIALS', 'true')
     new_session = session_helper.create_new_session(
-        user_id, jwt_payload, session_data)
+        user_id, jwt_payload, session_info)
 
     attach_access_token_to_cookie(
         response, new_session['access_token']['value'], new_session['access_token']['expires_at'])
@@ -110,12 +110,12 @@ def revoke_session(session_handle):
     session_helper.revoke_session(session_handle)
 
 
-def get_session_data(session_handle):
-    return session_helper.get_session_data(session_handle)
+def get_session_info(session_handle):
+    return session_helper.get_session_info(session_handle)
 
 
-def update_session_data(session_handle, new_session_data=None):
-    session_helper.update_session_data(session_handle, new_session_data)
+def update_session_info(session_handle, new_session_info=None):
+    session_helper.update_session_info(session_handle, new_session_info)
 
 
 def set_headers_for_options_api(response):

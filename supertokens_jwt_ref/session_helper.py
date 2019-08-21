@@ -20,7 +20,7 @@ from .exceptions import (
 )
 
 
-def create_new_session(user_id, jwt_payload, session_data):
+def create_new_session(user_id, jwt_payload, session_info):
     from .settings import supertokens_settings
 
     try:
@@ -32,7 +32,7 @@ def create_new_session(user_id, jwt_payload, session_data):
             refresh_token['token']), anti_csrf_token, None, jwt_payload)
 
         session_in_db = RefreshTokenModel(session_handle=session_handle, user_id=serialize_user_id(user_id), refresh_token_hash_2=custom_hash(custom_hash(
-            refresh_token['token'])), session_data=serialize_data(session_data), expires_at=datetime.fromtimestamp(refresh_token['expires_at'], tz=get_timezone()), jwt_payload=serialize_data(jwt_payload))
+            refresh_token['token'])), session_info=serialize_data(session_info), expires_at=datetime.fromtimestamp(refresh_token['expires_at'], tz=get_timezone()), jwt_payload=serialize_data(jwt_payload))
         session_in_db.save()
 
         return {
@@ -187,20 +187,20 @@ def refresh_session(refresh_token):
         raise_general_exception(e)
 
 
-def get_session_data(session_handle):
+def get_session_info(session_handle):
     try:
         session = RefreshTokenModel.objects.get(session_handle=session_handle)
-        return unserialize_data(session.session_data)
+        return unserialize_data(session.session_info)
     except RefreshTokenModel.DoesNotExist:
         return None
     except Exception as e:
         raise_general_exception(e)
 
 
-def update_session_data(session_handle, session_data):
+def update_session_info(session_handle, session_info):
     try:
         no_of_rows_matched = RefreshTokenModel.objects.filter(
-            session_handle=session_handle).update(session_data=serialize_data(session_data))
+            session_handle=session_handle).update(session_info=serialize_data(session_info))
         return no_of_rows_matched == 1
     except RefreshTokenModel.DoesNotExist:
         raise_unauthorized_exception('session does not exist anymore')
