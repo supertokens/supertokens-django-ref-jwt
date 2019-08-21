@@ -1,5 +1,5 @@
 from .refresh_token_signing_key import RefreshTokenSigningKey
-from .utils import encrypt, decrypt, sanitize_string, generate_uuid
+from .utils import encrypt, decrypt, sanitize_string, generate_uuid, custom_hash, get_timezone, sanitize_number
 from json import dumps, loads
 from datetime import datetime, timedelta
 from math import floor
@@ -21,7 +21,9 @@ class RefreshToken:
             nonce = splitted_token[1]
             payload = loads(decrypt(splitted_token[0], key))
             session_handle = sanitize_string(payload["sessionHandle"])
-            user_id = payload["userId"]
+            user_id = sanitize_number(payload["userId"])
+            if user_id is None:
+                user_id = sanitize_string(payload["userId"])
             parent_refresh_token_hash_1 = sanitize_string(payload["prt"])
             nonce_from_token = sanitize_string(payload["nonce"])
 
@@ -29,8 +31,8 @@ class RefreshToken:
                 raise Exception("invalid refresh token")
 
             return {
-                "user_id": user_id,
                 "session_handle": session_handle,
+                "user_id": user_id,
                 "parent_refresh_token_hash_1": parent_refresh_token_hash_1
             }
         except Exception as e:
@@ -41,26 +43,27 @@ class RefreshToken:
         key = RefreshTokenSigningKey.get_key()
 
         try:
-            nonce = generate_uuid()
+            nonce = custom_hash(generate_uuid())
             serialized_payload = dumps({
-                "nonce": nonce,
-                "userId": user_id,
                 "sessionHandle": session_handle,
-                "prt": parent_refresh_token_hash_1
+                "userId": user_id,
+                "prt": parent_refresh_token_hash_1,
+                "nonce": nonce,
             })
             encrypted_part = encrypt(serialized_payload, key)
             token = encrypted_part + "." + nonce
             validity = RefreshToken.get_validity()
-            current_datetime = datetime.now()
-            expires_at = current_datetime + validity
+            current_datetime = datetime.now(tz=get_timezone())
+            expires_at = validity + current_datetime
+            expires_at = floor(expires_at.timestamp())
             return {
                 "token": token,
-                "expires_at": floor(expires_at.timestamp())
+                "expires_at": expires_at
             }
         except Exception as e:
             raise_general_exception(e)
 
     @staticmethod
     def get_validity():
-        from .settings import supertokens_settings
-        return timedelta(seconds=supertokens_settings.REFRESH_TOKEN_VALIDITY * 60 * 60)
+        from .settings import get_refresh_token_validity
+        return timedelta(seconds=get_refresh_token_validity())
