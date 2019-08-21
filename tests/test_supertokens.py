@@ -22,7 +22,7 @@ class SupertokensTest(TestCase):
 
     def test_create_get_refresh_session_with_token_theft_ACT_enabled_and_cookie_path(self):
         access_token_path = 'testing/'
-        refresh_token_path = 'renew/'
+        refresh_token_path = 'refresh/'
 
         new_settings = {
             "ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL": 0.0005,
@@ -159,7 +159,7 @@ class SupertokensTest(TestCase):
 
     def test_create_get_refresh_session_with_token_theft_ACT_disabled_and_cookie_path(self):
         access_token_path = 'testing/'
-        refresh_token_path = 'renew/'
+        refresh_token_path = 'refresh/'
 
         new_settings = {
             "ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL": 0.0005,

@@ -15,7 +15,7 @@ DEFAULTS = {
     "ACCESS_TOKEN_PATH": "/",
     "ANTI_CSRF_ENABLE": True,
     "REFRESH_TOKEN_VALIDITY": 2400,
-    "REFRESH_TOKEN_PATH": "renew/",
+    "REFRESH_TOKEN_PATH": "refresh/",
     "COOKIE_DOMAIN": "localhost",
     "COOKIE_SECURE": True
 }
