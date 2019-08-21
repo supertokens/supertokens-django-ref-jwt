@@ -48,7 +48,7 @@ See our [Contributing](https://github.com/supertokens/supertokens-django-ref-jwt
 ## Support, questions and bugs
 We are most accessible via team@supertokens.io, via the GitHub issues feature and our [Discord server](https://supertokens.io/discord). 
 
-Click [here](https://github.com/supertokens/supertokens-django-ref-jwt#support-questions-and-bugs) to see more information.
+Click [here](https://github.com/supertokens/supertokens-node-mysql-ref-jwt#support-questions-and-bugs) to see more information.
 
 ## Authors
 Created with :heart: by the folks at SuperTokens. We are a startup passionate about security and solving software challenges in a way that's helpful for everyone! Please feel free to give us feedback at team@supertokens.io, until our website is ready :grinning:
