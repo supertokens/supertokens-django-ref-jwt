@@ -99,8 +99,8 @@ def assert_user_id_has_correct_format(user_id):
 
 def serialize_user_id(user_id):
     assert_user_id_has_correct_format(user_id)
-    is_parsing_error = True
     if isinstance(user_id, str):
+        is_parsing_error = True
         try:
             json_from_user_id = loads(user_id)
             is_parsing_error = False
