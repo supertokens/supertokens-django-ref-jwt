@@ -27,6 +27,10 @@ def get_access_token_signing_key_update_interval():
     return supertokens_settings.ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL * 60 * 60
 
 
+def get_refresh_token_validity():
+    return supertokens_settings.REFRESH_TOKEN_VALIDITY * 60 * 60
+
+
 def reload_supertokens_settings(*args, **kwargs):  # pragma: no cover
     global supertokens_settings
 
