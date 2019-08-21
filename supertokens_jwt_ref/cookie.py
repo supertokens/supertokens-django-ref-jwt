@@ -2,7 +2,8 @@ from .constant import (
     ACCESS_TOKEN_COOKIE_KEY,
     REFRESH_TOKEN_COOKIE_KEY,
     ID_REFRESH_TOKEN_COOKIE_KEY,
-    ANTI_CSRF_HEADER_KEY
+    ANTI_CSRF_HEADER_SET_KEY,
+    ANTI_CSRF_HEADER_GET_KEY
 )
 from .exceptions import raise_general_exception
 from datetime import datetime
@@ -10,7 +11,7 @@ from .utils import get_timezone
 
 
 def set_options_api_headers(response):
-    set_header(response, 'ACCESS-CONTROL-ALLOW-HEADERS', ANTI_CSRF_HEADER_KEY)
+    set_header(response, 'ACCESS-CONTROL-ALLOW-HEADERS', ANTI_CSRF_HEADER_GET_KEY)
     set_header(response, 'ACCESS-CONTROL-ALLOW-CREDENTIALS', 'true')
 
 
@@ -44,13 +45,13 @@ def attach_anti_csrf_header_if_required(response, value):
         if value is None:
             raise_general_exception(
                 'BUG: anti-csrf token is null. if you are getting this error, please report this as a bug')
-        set_header(response, ANTI_CSRF_HEADER_KEY, value)
+        set_header(response, ANTI_CSRF_HEADER_SET_KEY, value)
         set_header(response, 'ACCESS-CONTROL-EXPOSE-HEADERS',
-                   ANTI_CSRF_HEADER_KEY)
+                   ANTI_CSRF_HEADER_SET_KEY)
 
 
 def get_anti_csrf_header(request):
-    return get_header(request, ANTI_CSRF_HEADER_KEY)
+    return get_header(request, ANTI_CSRF_HEADER_GET_KEY)
 
 
 def clear_session_from_cookie(response):
