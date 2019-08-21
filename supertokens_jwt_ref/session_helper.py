@@ -90,12 +90,12 @@ def get_session(access_token, anti_csrf_token=None):
             }
 
         with transaction.atomic():
-            session_info = RefreshTokenModel.objects.select_for_update().get(
+            session = RefreshTokenModel.objects.select_for_update().get(
                 session_handle=session_handle)
-            promote_bool = session_info.refresh_token_hash_2 == custom_hash(
+            promote_bool = session.refresh_token_hash_2 == custom_hash(
                 access_token_info['parent_refresh_token_hash_1'])
 
-            if promote_bool or session_info.refresh_token_hash_2 == custom_hash(access_token_info['refresh_token_hash_1']):
+            if promote_bool or session.refresh_token_hash_2 == custom_hash(access_token_info['refresh_token_hash_1']):
                 if promote_bool:
                     refresh_token_validity = RefreshToken.get_validity()
                     current_datetime = datetime.now(tz=get_timezone())
@@ -132,29 +132,29 @@ def refresh_session(refresh_token):
     session_handle = refresh_token_info['session_handle']
     try:
         with transaction.atomic():
-            session_info = RefreshTokenModel.objects.select_for_update().get(
+            session = RefreshTokenModel.objects.select_for_update().get(
                 session_handle=session_handle)
             current_datetime = datetime.now(tz=get_timezone())
-            if session_info.expires_at < current_datetime:
+            if session.expires_at < current_datetime:
                 raise_unauthorized_exception(
                     'session does not exist or is expired')
-            if unserialize_user_id(session_info.user_id) != refresh_token_info['user_id']:
+            if unserialize_user_id(session.user_id) != refresh_token_info['user_id']:
                 raise_unauthorized_exception(
                     'user id for session does not match with the user id in the refresh token')
 
-            if session_info.refresh_token_hash_2 == custom_hash(custom_hash(refresh_token)):
+            if session.refresh_token_hash_2 == custom_hash(custom_hash(refresh_token)):
                 from .settings import supertokens_settings
                 new_refresh_token = RefreshToken.create_new_refresh_token(
                     session_handle, refresh_token_info['user_id'], custom_hash(refresh_token))
                 new_anti_csrf_token = generate_uuid() if supertokens_settings.ANTI_CSRF_ENABLE else None
                 new_access_token = AccessToken.create_new_access_token(session_handle, refresh_token_info['user_id'], custom_hash(
-                    new_refresh_token['token']), new_anti_csrf_token, custom_hash(refresh_token), unserialize_data(session_info.jwt_payload))
+                    new_refresh_token['token']), new_anti_csrf_token, custom_hash(refresh_token), unserialize_data(session.jwt_payload))
 
                 return {
                     'session': {
                         'handle': session_handle,
                         'user_id': refresh_token_info['user_id'],
-                        'jwt_payload': unserialize_data(session_info.jwt_payload),
+                        'jwt_payload': unserialize_data(session.jwt_payload),
                     },
                     'new_access_token': {
                         'value': new_access_token['token'],
@@ -171,7 +171,7 @@ def refresh_session(refresh_token):
                     'new_anti_csrf_token': new_anti_csrf_token
                 }
 
-            if refresh_token_info['parent_refresh_token_hash_1'] is not None and custom_hash(refresh_token_info['parent_refresh_token_hash_1']) == session_info.refresh_token_hash_2:
+            if refresh_token_info['parent_refresh_token_hash_1'] is not None and custom_hash(refresh_token_info['parent_refresh_token_hash_1']) == session.refresh_token_hash_2:
                 refresh_token_validity = RefreshToken.get_validity()
                 current_datetime = datetime.now(tz=get_timezone())
                 expires_at = current_datetime + refresh_token_validity
