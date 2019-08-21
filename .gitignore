@@ -2,3 +2,6 @@ __pycache__
 .pytest_cache
 virtual
 .vscode
+build
+dist
+supertokens_jwt_ref.egg-info
