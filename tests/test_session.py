@@ -489,8 +489,7 @@ class SessionTest(TestCase):
         self.assertEqual(session_data_db, session_data)
 
         new_session_info = 44
-        self.assertTrue(update_session_info(
-            session['session']['handle'], new_session_info))
+        update_session_info(session['session']['handle'], new_session_info)
         session_data_db = get_session_info(session['session']['handle'])
         self.assertEqual(session_data_db, new_session_info)
 

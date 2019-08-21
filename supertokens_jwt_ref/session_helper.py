@@ -20,6 +20,8 @@ from .exceptions import (
     raise_try_refresh_token_exception
 )
 
+# TODO: Bhumil. Serialise and Unserialise content read and written to db can be modularised somehow?
+
 
 def create_new_session(user_id, jwt_payload, session_info):
     from .settings import supertokens_settings
@@ -132,6 +134,10 @@ def get_session(access_token, anti_csrf_token=None):
 def refresh_session(refresh_token):
     refresh_token_info = RefreshToken.get_info_from_refresh_token(
         refresh_token)
+    return refresh_session_helper(refresh_token, refresh_token_info)
+
+
+def refresh_session_helper(refresh_token, refresh_token_info):
     session_handle = refresh_token_info['session_handle']
     try:
         with transaction.atomic():
@@ -147,6 +153,7 @@ def refresh_session(refresh_token):
 
             if session.refresh_token_hash_2 == custom_hash(custom_hash(refresh_token)):
                 from .settings import supertokens_settings
+                # TODO: Bhumil. Any way to commit here?
                 new_refresh_token = RefreshToken.create_new_refresh_token(
                     session_handle, refresh_token_info['user_id'], custom_hash(refresh_token))
                 new_anti_csrf_token = generate_uuid() if supertokens_settings.ANTI_CSRF_ENABLE else None
@@ -177,10 +184,10 @@ def refresh_session(refresh_token):
             if refresh_token_info['parent_refresh_token_hash_1'] is not None and custom_hash(refresh_token_info['parent_refresh_token_hash_1']) == session.refresh_token_hash_2:
                 refresh_token_validity = RefreshToken.get_validity()
                 current_datetime = datetime.now(tz=get_timezone())
-                expires_at = current_datetime + refresh_token_validity
+                expires_at = refresh_token_validity + current_datetime
                 RefreshTokenModel.objects.filter(session_handle=session_handle).update(
                     refresh_token_hash_2=custom_hash(custom_hash(refresh_token)), expires_at=expires_at)
-                return refresh_session(refresh_token)
+                return refresh_session_helper(refresh_token, refresh_token_info)
 
         raise_token_theft_exception(
             refresh_token_info['user_id'], session_handle)
@@ -190,27 +197,16 @@ def refresh_session(refresh_token):
         raise_general_exception(e)
 
 
-def get_session_info(session_handle):
+# TODO: Bhumil: what if result of query is empty?
+def revoke_all_sessions_for_user(user_id):
     try:
-        session = RefreshTokenModel.objects.get(session_handle=session_handle)
-        return unserialize_data(session.session_info)
-    except RefreshTokenModel.DoesNotExist:
-        return None
+        RefreshTokenModel.objects.filter(
+            user_id=serialize_user_id(user_id)).delete()
     except Exception as e:
         raise_general_exception(e)
 
 
-def update_session_info(session_handle, session_info):
-    try:
-        no_of_rows_matched = RefreshTokenModel.objects.filter(
-            session_handle=session_handle).update(session_info=serialize_data(session_info))
-        return no_of_rows_matched == 1
-    except RefreshTokenModel.DoesNotExist:
-        raise_unauthorized_exception('session does not exist anymore')
-    except Exception as e:
-        raise_general_exception(e)
-
-
+# TODO: Bhumil: what if result of query is empty?
 def get_all_session_handles_for_user(user_id):
     try:
         sessions = RefreshTokenModel.objects.filter(
@@ -223,14 +219,6 @@ def get_all_session_handles_for_user(user_id):
         raise_general_exception(e)
 
 
-def revoke_all_sessions_for_user(user_id):
-    try:
-        RefreshTokenModel.objects.filter(
-            user_id=serialize_user_id(user_id)).delete()
-    except Exception as e:
-        raise_general_exception(e)
-
-
 def revoke_session(session_handle):
     try:
         # deletes the object and returns the number of objects deleted and a dictionary with the number of deletions per object type
@@ -239,6 +227,26 @@ def revoke_session(session_handle):
         return rows_deleted == 1
     except RefreshTokenModel.DoesNotExist:
         return False
+    except Exception as e:
+        raise_general_exception(e)
+
+
+def get_session_info(session_handle):
+    try:
+        session = RefreshTokenModel.objects.get(session_handle=session_handle)
+        return unserialize_data(session.session_info)
+    except RefreshTokenModel.DoesNotExist:
+        raise_unauthorized_exception("session does not exist anymore")
+    except Exception as e:
+        raise_general_exception(e)
+
+
+def update_session_info(session_handle, session_info):
+    try:
+        RefreshTokenModel.objects.filter(
+            session_handle=session_handle).update(session_info=serialize_data(session_info))
+    except RefreshTokenModel.DoesNotExist:
+        raise_unauthorized_exception('session does not exist anymore')
     except Exception as e:
         raise_general_exception(e)
 
