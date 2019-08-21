@@ -1,4 +1,4 @@
-from supertokens_jwt_ref import cookie
+from supertokens_jwt_ref import cookie_and_header
 from django.http import HttpResponse
 from django.test import TestCase, RequestFactory
 from datetime import datetime, timedelta
@@ -21,8 +21,8 @@ class CookieTest(TestCase):
         secure = True
         httponly = True
 
-        cookie.set_cookie(response, key, value,
-                          expires.timestamp(), path, domain, secure, httponly)
+        cookie_and_header.set_cookie(response, key, value,
+                                     expires.timestamp(), path, domain, secure, httponly)
         # will return None if no cookie with this key is found
         cookie_obj = response.cookies.get(key)
         self.assertIsNotNone(cookie_obj)
@@ -50,20 +50,20 @@ class CookieTest(TestCase):
         request = self.factory.get('/')
         request.COOKIES[key] = value
 
-        self.assertEqual(cookie.get_cookie(request, key), value)
+        self.assertEqual(cookie_and_header.get_cookie(request, key), value)
 
     def test_get_header(self):
         key = 'TEST'
         value = 'value'
 
         request = self.factory.get('/', **{'HTTP_' + key: value})
-        self.assertEqual(cookie.get_header(request, key), value)
+        self.assertEqual(cookie_and_header.get_header(request, key), value)
 
     def test_set_header(self):
         response = HttpResponse()
         key = 'HTTP_TEST'
         value = 'value'
 
-        cookie.set_header(response, key, value)
+        cookie_and_header.set_header(response, key, value)
         self.assertTrue(response.has_header(key))
         self.assertEqual(response.get(key), value)

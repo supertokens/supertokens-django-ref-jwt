@@ -11,11 +11,14 @@ from .utils import get_timezone
 
 
 def set_options_api_headers(response):
-    set_header(response, 'ACCESS-CONTROL-ALLOW-HEADERS', ANTI_CSRF_HEADER_GET_KEY)
+    set_header(response, 'ACCESS-CONTROL-ALLOW-HEADERS', ANTI_CSRF_HEADER_SET_KEY)
     set_header(response, 'ACCESS-CONTROL-ALLOW-CREDENTIALS', 'true')
 
 
 def set_header(response, key, value):
+    if response.has_header(key):
+        existing_value = response.get(key)
+        value = existing_value + ", " + value
     response[key] = value
 
 

@@ -1,4 +1,4 @@
-from .cookie import (
+from .cookie_and_header import (
     set_header,
     get_anti_csrf_header,
     set_options_api_headers,

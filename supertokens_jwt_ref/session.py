@@ -1,5 +1,5 @@
 from . import session_helper
-from .cookie import clear_session_from_cookie
+from .cookie_and_header import clear_session_from_cookie
 
 
 class Session:
