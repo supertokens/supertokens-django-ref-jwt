@@ -19,11 +19,11 @@ extras_require = {
 
 setup(
     name="supertokens_jwt_ref",
-    version="0.0.3",
+    version="0.0.5",
     author="Bhumil Sarvaiya, Rishabh Poddar",
     license="MIT",
     author_email="sarvaiyabhumil@gmail.com, rishabh@supertokens.io",
-    description="SuperTokens' session management solution",
+    description="SuperTokens session management solution",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/supertokens/supertokens-django-ref-jwt",
