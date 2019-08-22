@@ -2,8 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/supertokens/supertokens-django-ref-jwt/blob/master/LICENSE)
 <a href="https://supertokens.io/discord">
-        <img src="https://img.shields.io/discord/603466164219281420.svg?logo=discord"
-            alt="chat on Discord"></a>
+<img src="https://img.shields.io/discord/603466164219281420.svg?logo=discord" alt="chat on Discord"></a>
 
 **Master**
 [![CircleCI](https://circleci.com/gh/supertokens/supertokens-django-ref-jwt.svg?style=svg)](https://circleci.com/gh/supertokens/supertokens-django-ref-jwt)
