@@ -18,17 +18,17 @@ extras_require = {
 }
 
 setup(
-    name = "supertokens_jwt_ref",
-    version = "0.0.1",
-    author = "Bhumil Sarvaiya",
-    license = "MIT",
-    author_email = "sarvaiyabhumil@gmail.com",
-    description = "Supertokens package for python (DRF)",
-    long_description = long_description,
-    long_description_content_type = "text/markdown",
-    url = "https://github.com/supertokens/supertokens-django-ref-jwt",
-    packages = find_packages(exclude=["contrib", "docs", "tests*", "licenses", "requirements"]),
-    classifiers = [
+    name="supertokens_jwt_ref",
+    version="0.0.2",
+    author="Bhumil Sarvaiya, Rishabh Poddar",
+    license="MIT",
+    author_email="sarvaiyabhumil@gmail.com, rishabh@supertokens.io",
+    description="Supertokens package for python (DRF)",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/supertokens/supertokens-django-ref-jwt",
+    packages=find_packages(exclude=["contrib", "docs", "tests*", "licenses", "requirements"]),
+    classifiers=[
         "Framework :: Django :: 2.2",
         "Framework :: Django",
         "Programming Language :: Python :: 3",
@@ -38,8 +38,8 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    keywords = "",
-    install_requires = [
+    keywords="",
+    install_requires=[
         "django",
         "djangorestframework",
         "pycryptodome",
