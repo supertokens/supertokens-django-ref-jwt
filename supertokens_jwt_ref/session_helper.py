@@ -20,8 +20,6 @@ from .exceptions import (
     raise_try_refresh_token_exception
 )
 
-# TODO: Bhumil. Serialise and Unserialise content read and written to db can be modularised somehow?
-
 
 def create_new_session(user_id, jwt_payload, session_info):
     from .settings import supertokens_settings
@@ -62,6 +60,7 @@ def create_new_session(user_id, jwt_payload, session_info):
         raise_general_exception(e)
 
 
+# TODO: pass an extra boolean to indicate if we want to do csrf protection or not.
 def get_session(access_token, anti_csrf_token=None):
     from .settings import supertokens_settings
 
@@ -94,8 +93,7 @@ def get_session(access_token, anti_csrf_token=None):
             }
 
         with transaction.atomic():
-            session = RefreshTokenModel.objects.select_for_update().get(
-                session_handle=session_handle)
+            session = get_session_from_database_for_update(session_handle)
             promote_bool = session.refresh_token_hash_2 == custom_hash(
                 access_token_info['parent_refresh_token_hash_1'])
 
@@ -142,13 +140,12 @@ def refresh_session_helper(refresh_token, refresh_token_info):
     session_handle = refresh_token_info['session_handle']
     try:
         with transaction.atomic():
-            session = RefreshTokenModel.objects.select_for_update().get(
-                session_handle=session_handle)
+            session = get_session_from_database_for_update(session_handle)
             current_datetime = datetime.now(tz=get_timezone())
             if session.expires_at < current_datetime:
                 raise_unauthorized_exception(
                     'session does not exist or is expired')
-            if unserialize_user_id(session.user_id) != refresh_token_info['user_id']:
+            if session.user_id != refresh_token_info['user_id']:
                 raise_unauthorized_exception(
                     'user id for session does not match with the user id in the refresh token')
 
@@ -159,13 +156,13 @@ def refresh_session_helper(refresh_token, refresh_token_info):
                     session_handle, refresh_token_info['user_id'], custom_hash(refresh_token))
                 new_anti_csrf_token = generate_uuid() if supertokens_settings.ANTI_CSRF_ENABLE else None
                 new_access_token = AccessToken.create_new_access_token(session_handle, refresh_token_info['user_id'], custom_hash(
-                    new_refresh_token['token']), new_anti_csrf_token, custom_hash(refresh_token), unserialize_data(session.jwt_payload))
+                    new_refresh_token['token']), new_anti_csrf_token, custom_hash(refresh_token), session.jwt_payload)
 
                 return {
                     'session': {
                         'handle': session_handle,
                         'user_id': refresh_token_info['user_id'],
-                        'jwt_payload': unserialize_data(session.jwt_payload),
+                        'jwt_payload': session.jwt_payload,
                     },
                     'new_access_token': {
                         'value': new_access_token['token'],
@@ -198,7 +195,6 @@ def refresh_session_helper(refresh_token, refresh_token_info):
         raise_general_exception(e)
 
 
-# TODO: Bhumil: what if result of query is empty?
 def revoke_all_sessions_for_user(user_id):
     try:
         RefreshTokenModel.objects.filter(
@@ -207,7 +203,6 @@ def revoke_all_sessions_for_user(user_id):
         raise_general_exception(e)
 
 
-# TODO: Bhumil: what if result of query is empty?
 def get_all_session_handles_for_user(user_id):
     try:
         sessions = RefreshTokenModel.objects.filter(
@@ -234,8 +229,8 @@ def revoke_session(session_handle):
 
 def get_session_info(session_handle):
     try:
-        session = RefreshTokenModel.objects.get(session_handle=session_handle)
-        return unserialize_data(session.session_info)
+        session = get_session_from_database(session_handle)
+        return session.session_info
     except RefreshTokenModel.DoesNotExist:
         raise_unauthorized_exception("session does not exist anymore")
     except Exception as e:
@@ -254,3 +249,20 @@ def update_session_info(session_handle, session_info):
 
 def remove_expired_tokens():
     return RefreshTokenModel.objects.filter(expires_at__lte=datetime.now(tz=get_timezone())).delete()
+
+
+def get_session_from_database_for_update(session_handle):
+    session = RefreshTokenModel.objects.select_for_update().get(
+        session_handle=session_handle)
+    session.user_id = unserialize_user_id(session.user_id)
+    session.jwt_payload = unserialize_data(session.jwt_payload)
+    session.session_info = unserialize_data(session.session_info)
+    return session
+
+
+def get_session_from_database(session_handle):
+    session = RefreshTokenModel.objects.get(session_handle=session_handle)
+    session.user_id = unserialize_user_id(session.user_id)
+    session.jwt_payload = unserialize_data(session.jwt_payload)
+    session.session_info = unserialize_data(session.session_info)
+    return session
