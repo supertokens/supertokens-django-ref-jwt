@@ -21,3 +21,15 @@ RUN apt-get install python-pip -y
 RUN rm /usr/bin/pip
 
 RUN ln /usr/local/bin/pip3.5 /usr/bin/pip
+
+RUN apt-get install libsqlite3-dev
+
+RUN wget https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz
+
+RUN tar -xf Python-3.5.0.tar.xz
+
+RUN cd Python-3.5.0/ && ./configure --enable-loadable-sqlite-extensions && make && make install
+
+RUN rm -rf Python-3.5.0
+
+RUN rm Python-3.5.0.tar.xz Python-3.5.0.tgz
