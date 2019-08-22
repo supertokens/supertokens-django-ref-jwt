@@ -42,7 +42,10 @@ Coming Soon.
 Please see our [Contributing](https://github.com/supertokens/supertokens-django-ref-jwt/blob/master/CONTRIBUTING.md) guide
 
 ## Tests
-TODO.
+```
+make dev-install
+make test
+```
 See our [Contributing](https://github.com/supertokens/supertokens-django-ref-jwt/blob/master/CONTRIBUTING.md) guide for more information.
 
 ## Support, questions and bugs
