@@ -19,7 +19,7 @@ extras_require = {
 
 setup(
     name="supertokens_jwt_ref",
-    version="0.0.8",
+    version="1.0.0",
     author="Bhumil Sarvaiya, Rishabh Poddar",
     license="MIT",
     author_email="sarvaiyabhumil@gmail.com, rishabh@supertokens.io",
