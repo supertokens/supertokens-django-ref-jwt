@@ -24,8 +24,8 @@ setup(
     license="MIT",
     author_email="sarvaiyabhumil@gmail.com, rishabh@supertokens.io",
     description="SuperTokens session management solution",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description="Please visit our GitHub repository for more information: https://github.com/supertokens/supertokens-django-ref-jwt#readme",
+    long_description_content_type="text/plain",
     url="https://github.com/supertokens/supertokens-django-ref-jwt",
     packages=find_packages(exclude=["contrib", "docs", "tests*", "licenses", "requirements"]),
     classifiers=[
