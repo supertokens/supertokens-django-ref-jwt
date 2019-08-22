@@ -5,6 +5,9 @@ jobs:
       - image: circleci/node:8.10.0
     steps:
       - checkout
+      - run: pip install setuptools wheel twine
+      - run: python3.5 setup.py sdist bdist_wheel
+      - run: twine upload --username $USERNAME --password $PASSWORD dist/*
 
   test:
     docker:
