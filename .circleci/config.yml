@@ -2,7 +2,7 @@ version: 2
 jobs:
   publish:
     docker:
-      - image: circleci/node:8.10.0
+      - image: circleci/django
     steps:
       - checkout
       - run: pip install setuptools wheel twine
