@@ -11,8 +11,8 @@ from .utils import get_timezone
 
 
 def set_options_api_headers(response):
-    set_header(response, 'ACCESS-CONTROL-ALLOW-HEADERS', ANTI_CSRF_HEADER_SET_KEY)
-    set_header(response, 'ACCESS-CONTROL-ALLOW-CREDENTIALS', 'true')
+    set_header(response, 'Access-Control-Allow-Headers', ANTI_CSRF_HEADER_SET_KEY)
+    set_header(response, 'Access-Control-Allow-Credentials', 'true')
 
 
 def set_header(response, key, value):
@@ -49,7 +49,7 @@ def attach_anti_csrf_header_if_required(response, value):
             raise_general_exception(
                 'BUG: anti-csrf token is null. if you are getting this error, please report this as a bug')
         set_header(response, ANTI_CSRF_HEADER_SET_KEY, value)
-        set_header(response, 'ACCESS-CONTROL-EXPOSE-HEADERS',
+        set_header(response, 'Access-Control-Expose-Headers',
                    ANTI_CSRF_HEADER_SET_KEY)
 
 
