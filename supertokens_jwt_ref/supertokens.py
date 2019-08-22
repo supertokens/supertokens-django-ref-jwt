@@ -55,7 +55,7 @@ def get_session(request, response, enable_csrf_protection):
 
         if anti_csrf_token is None and enable_csrf_protection:
             raise_try_refresh_token_exception('anti csrf token is missing')
-        session = session_helper.get_session(access_token, anti_csrf_token)
+        session = session_helper.get_session(access_token, anti_csrf_token if anti_csrf_token is not None else False)
         if session['new_access_token'] is not None:
             attach_access_token_to_cookie(
                 response, session['new_access_token']['value'], session['new_access_token']['expires_at'])

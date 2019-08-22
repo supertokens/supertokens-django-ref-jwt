@@ -57,7 +57,7 @@ class SessionTest(TestCase):
         self.assertEqual(session_info['session']['user_id'], user_id)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
 
-        session_info = get_session(session['access_token']['value'])
+        session_info = get_session(session['access_token']['value'], False)
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['user_id'], user_id)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
@@ -85,7 +85,7 @@ class SessionTest(TestCase):
 
         self.assertEqual(RefreshTokenModel.objects.all().count(), 1)
 
-        session_info = get_session(session['access_token']['value'])
+        session_info = get_session(session['access_token']['value'], False)
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['user_id'], user_id)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
@@ -309,7 +309,7 @@ class SessionTest(TestCase):
 
         sleep(1.5)
         try:
-            get_session(session['access_token']['value'])
+            get_session(session['access_token']['value'], False)
             self.assertTrue(False)
         except SuperTokensTryRefreshTokenException:
             self.assertTrue(True)
@@ -323,7 +323,7 @@ class SessionTest(TestCase):
             new_refreshed_session['session']['handle']), session_data)
 
         session_info = get_session(
-            new_refreshed_session['new_access_token']['value'])
+            new_refreshed_session['new_access_token']['value'], False)
         validate(session_info, schema_updated_access_token_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
         self.assertEqual(get_session_info(
@@ -332,7 +332,7 @@ class SessionTest(TestCase):
             session_info['new_access_token'], new_refreshed_session['new_access_token']['value'])
 
         new_access_token = session_info['new_access_token']
-        session_info = get_session(session_info['new_access_token']['value'])
+        session_info = get_session(session_info['new_access_token']['value'], False)
         validate(session_info, schema_new_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
         self.assertEqual(get_session_info(
@@ -355,7 +355,7 @@ class SessionTest(TestCase):
             new_refreshed_session['session']['handle']), session_data)
 
         session_info = get_session(
-            new_refreshed_session['new_access_token']['value'])
+            new_refreshed_session['new_access_token']['value'], False)
         validate(session_info, schema_updated_access_token_session_get)
         self.assertEqual(session_info['session']['jwt_payload'], jwt_payload)
         self.assertEqual(get_session_info(

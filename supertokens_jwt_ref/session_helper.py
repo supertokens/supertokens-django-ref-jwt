@@ -60,8 +60,8 @@ def create_new_session(user_id, jwt_payload, session_info):
         raise_general_exception(e)
 
 
-# TODO: pass an extra boolean to indicate if we want to do csrf protection or not.
-def get_session(access_token, anti_csrf_token=None):
+# anti_csrf_token should be False if user does not want to have CSRF check for this API.
+def get_session(access_token, anti_csrf_token):
     from .settings import supertokens_settings
 
     try:
@@ -69,8 +69,10 @@ def get_session(access_token, anti_csrf_token=None):
             access_token)
         session_handle = access_token_info['session_handle']
 
-        anti_csrf_token = anti_csrf_token if supertokens_settings.ANTI_CSRF_ENABLE else None
-        if anti_csrf_token is not None and anti_csrf_token != access_token_info['anti_csrf_token']:
+        anti_csrf_token = anti_csrf_token if supertokens_settings.ANTI_CSRF_ENABLE else False
+        if anti_csrf_token is None:
+            raise_general_exception("provided antiCsrfToken is None. Please pass False instead")
+        if anti_csrf_token is not False and anti_csrf_token != access_token_info['anti_csrf_token']:
             raise_try_refresh_token_exception("anti-csrf check failed")
 
         enable_blacklisting = supertokens_settings.ACCESS_TOKEN_ENABLE_BLACKLISTING
@@ -104,8 +106,6 @@ def get_session(access_token, anti_csrf_token=None):
                     expires_at = refresh_token_validity + current_datetime
                     RefreshTokenModel.objects.filter(session_handle=session_handle).update(
                         refresh_token_hash_2=custom_hash(access_token_info['refresh_token_hash_1']), expires_at=expires_at)
-
-                # TODO: Bhumil. somehow commit here?
 
                 new_access_token = AccessToken.create_new_access_token(
                     session_handle, access_token_info['user_id'], access_token_info['refresh_token_hash_1'], access_token_info['anti_csrf_token'], None, access_token_info['user_payload'])
@@ -151,7 +151,6 @@ def refresh_session_helper(refresh_token, refresh_token_info):
 
             if session.refresh_token_hash_2 == custom_hash(custom_hash(refresh_token)):
                 from .settings import supertokens_settings
-                # TODO: Bhumil. Any way to commit here?
                 new_refresh_token = RefreshToken.create_new_refresh_token(
                     session_handle, refresh_token_info['user_id'], custom_hash(refresh_token))
                 new_anti_csrf_token = generate_uuid() if supertokens_settings.ANTI_CSRF_ENABLE else None
