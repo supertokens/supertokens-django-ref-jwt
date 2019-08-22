@@ -5,8 +5,8 @@ jobs:
       - image: rishabhpoddar/django
     steps:
       - checkout
-      - run: pip install setuptools wheel==0.31.0 twine
-      - run: python3.5 setup.py sdist bdist_wheel
+      - run: pip3.7 install setuptools wheel==0.31.0 twine
+      - run: python3.7 setup.py sdist bdist_wheel
       - run: twine upload --username $USERNAME --password $PASSWORD dist/*
 
   test:
