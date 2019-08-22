@@ -95,7 +95,7 @@ def get_session(access_token, anti_csrf_token):
             }
 
         with transaction.atomic():
-            session = get_session_from_database_for_update(session_handle)
+            session = __get_session_from_database_for_update(session_handle)
             promote_bool = session.refresh_token_hash_2 == custom_hash(
                 access_token_info['parent_refresh_token_hash_1'])
 
@@ -140,7 +140,7 @@ def refresh_session_helper(refresh_token, refresh_token_info):
     session_handle = refresh_token_info['session_handle']
     try:
         with transaction.atomic():
-            session = get_session_from_database_for_update(session_handle)
+            session = __get_session_from_database_for_update(session_handle)
             current_datetime = datetime.now(tz=get_timezone())
             if session.expires_at < current_datetime:
                 raise_unauthorized_exception(
@@ -228,7 +228,7 @@ def revoke_session(session_handle):
 
 def get_session_info(session_handle):
     try:
-        session = get_session_from_database(session_handle)
+        session = __get_session_from_database(session_handle)
         return session.session_info
     except RefreshTokenModel.DoesNotExist:
         raise_unauthorized_exception("session does not exist anymore")
@@ -250,7 +250,7 @@ def remove_expired_tokens():
     return RefreshTokenModel.objects.filter(expires_at__lte=datetime.now(tz=get_timezone())).delete()
 
 
-def get_session_from_database_for_update(session_handle):
+def __get_session_from_database_for_update(session_handle):
     session = RefreshTokenModel.objects.select_for_update().get(
         session_handle=session_handle)
     session.user_id = unserialize_user_id(session.user_id)
@@ -259,7 +259,7 @@ def get_session_from_database_for_update(session_handle):
     return session
 
 
-def get_session_from_database(session_handle):
+def __get_session_from_database(session_handle):
     session = RefreshTokenModel.objects.get(session_handle=session_handle)
     session.user_id = unserialize_user_id(session.user_id)
     session.jwt_payload = unserialize_data(session.jwt_payload)
