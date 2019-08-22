@@ -23,7 +23,7 @@ setup(
     author="Bhumil Sarvaiya, Rishabh Poddar",
     license="MIT",
     author_email="sarvaiyabhumil@gmail.com, rishabh@supertokens.io",
-    description="Session management implementation for Django framework using JWT access tokens and refresh tokens",
+    description="SuperTokens' session management solution",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/supertokens/supertokens-django-ref-jwt",
