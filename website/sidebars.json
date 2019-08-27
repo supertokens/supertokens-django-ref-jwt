@@ -1,0 +1,37 @@
+{
+    "docs": {
+        "Introduction": [
+            "introduction/what-and-why",
+            "introduction/general-structure"
+        ],
+        "Backend": [
+            "backend/installation",
+            "backend/initialisation",
+            "backend/user-login",
+            "backend/verify-session",
+            "backend/session-object",
+            "backend/manipulating-session-info",
+            "backend/options-api",
+            "backend/refreshing-session",
+            "backend/user-logout",
+            "backend/revoking-session",
+            "backend/exception-handling",
+            "backend/session-handle",
+            "backend/api-reference"
+        ],
+        "Frontend": [
+            "frontend/frontend"
+        ],
+        "Example Project": [
+            "try-it-out/example"
+        ],
+        "Migration": [
+            "migration/backend",
+            "migration/database",
+            "migration/website"
+        ],
+        "Troubleshooting": [
+            "troubleshooting/troubleshooting"
+        ]
+    }
+}

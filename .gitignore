@@ -1,8 +1,6 @@
-__pycache__
-.pytest_cache
-virtual
-.vscode
-build
-dist
-supertokens_jwt_ref.egg-info
+*/node_modules
 .DS_Store
+package-lock.json
+build/
+.history/
+node_modules
