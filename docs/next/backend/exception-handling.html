@@ -69,7 +69,7 @@
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="supertokensgeneralexception"></a><a href="#supertokensgeneralexception" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>SuperTokensGeneralException</code></h3>
 <ul>
-<li>This is the most general type of exception. Can be raised for a variety of reasons:
+<li>This is the most general type of exception. Can be thrown for a variety of reasons:
 <ul>
 <li>Database issues - not reachable, instance crash, etc.</li>
 <li>Generic &quot;Something went wrong&quot; errors.</li>
@@ -78,7 +78,7 @@
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="supertokensunauthorizedexception"></a><a href="#supertokensunauthorizedexception" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>SuperTokensUnauthorizedException</code></h3>
 <ul>
-<li>This exception is raised when the library is sure that this user's session does not exist anymore. This can happen:
+<li>This exception is thrown when the library is sure that this user's session does not exist anymore. This can happen:
 <ul>
 <li>If the refresh token expires.</li>
 <li>If the user clears the cookies.</li>
@@ -88,13 +88,13 @@
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="supertokenstokentheftexception"></a><a href="#supertokenstokentheftexception" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>SuperTokensTokenTheftException</code></h3>
 <ul>
-<li>This is raised when we detect token theft.</li>
+<li>This is thrown when we detect token theft.</li>
 <li>Handling this exception, you can revoke the affected user's current session, or all their sessions.</li>
 <li>The way to handle this exception is to ask the user to login again.</li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="supertokenstryrefreshtokenexception"></a><a href="#supertokenstryrefreshtokenexception" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>SuperTokensTryRefreshTokenException</code></h3>
 <ul>
-<li>This exception is raised when:
+<li>This exception is thrown when:
 <ul>
 <li>Access token validation failed.</li>
 <li>CSRF token validation failed. (If in <code>settings.py</code>, <code>ANTI_CSRF_ENABLE</code> in the <code>SUPER_TOKENS</code> object is set to <code>True</code> (default: True))</li>
