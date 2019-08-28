@@ -35,7 +35,7 @@ The library has the following features:
 - [Authors](https://github.com/supertokens/supertokens-django-ref-jwt#authors)
 
 ## Documentation: 
-Coming Soon.
+Please see our [Documentation website](https://supertokens.github.io/supertokens-django-ref-jwt/)
 
 ## Making changes
 Please see our [Contributing](https://github.com/supertokens/supertokens-django-ref-jwt/blob/master/CONTRIBUTING.md) guide
