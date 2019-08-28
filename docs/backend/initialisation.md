@@ -5,7 +5,7 @@ sidebar_label: Setup
 ---
 
 ## Adding to Installed Apps
-- Add package to INSTALLED_APPS in settings.py of your main app
+- Add package to ```INSTALLED_APPS``` in ```settings.py``` of your main app
 ```python
 # Django project settings.py
 
