@@ -1,0 +1,37 @@
+{
+  "version-1.0.X-docs": {
+    "Introduction": [
+      "version-1.0.X-introduction/what-and-why",
+      "version-1.0.X-introduction/general-structure"
+    ],
+    "Backend": [
+      "version-1.0.X-backend/installation",
+      "version-1.0.X-backend/initialisation",
+      "version-1.0.X-backend/user-login",
+      "version-1.0.X-backend/verify-session",
+      "version-1.0.X-backend/session-object",
+      "version-1.0.X-backend/manipulating-session-info",
+      "version-1.0.X-backend/options-api",
+      "version-1.0.X-backend/refreshing-session",
+      "version-1.0.X-backend/user-logout",
+      "version-1.0.X-backend/revoking-session",
+      "version-1.0.X-backend/exception-handling",
+      "version-1.0.X-backend/session-handle",
+      "version-1.0.X-backend/api-reference"
+    ],
+    "Frontend": [
+      "version-1.0.X-frontend/frontend"
+    ],
+    "Example Project": [
+      "version-1.0.X-try-it-out/example"
+    ],
+    "Migration": [
+      "version-1.0.X-migration/backend",
+      "version-1.0.X-migration/database",
+      "version-1.0.X-migration/website"
+    ],
+    "Troubleshooting": [
+      "version-1.0.X-troubleshooting/troubleshooting"
+    ]
+  }
+}
