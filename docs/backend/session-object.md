@@ -12,20 +12,20 @@ session = supertokens.get_session(request, response, enable_csrf_protection)
 Please only use this session object if you have not sent a reply to the client yet.
 </div>
 
-## Call the ```get_user_id``` function: [API Reference](../api-reference#sessiongetuserid)
+## Call the ```get_user_id``` function: [API Reference](api-reference#sessionget_user_id)
 ```python
 session.get_user_id()
 ```
 - This function does not do any database call.
 
-## Call the ```get_jwt_payload``` function: [API Reference](../api-reference#sessiongetjwtpayload)
+## Call the ```get_jwt_payload``` function: [API Reference](api-reference#sessionget_jwt_payload)
 ```python
 session.get_jwt_payload()
 ```
 - This function does not do any database call.
 - It reads the payload available in the JWT access token that was used to verify this session.
 
-## Call the ```revoke_session``` function: [API Reference](../api-reference#sessionrevokesession)
+## Call the ```revoke_session``` function: [API Reference](api-reference#sessionrevoke_session)
 ```python
 session.revoke_session()
 ```
@@ -33,13 +33,13 @@ session.revoke_session()
 - This function deletes the session from the database and clears relevant auth cookies
 - If using ```blacklisting```, this will immediately invalidate the ```JWT``` access token. If not, the user may still be able to continue using their access token to call authenticated APIs (until it expires).
 
-## Call the ```get_session_info``` function: [API Reference](../api-reference#sessiongetsessiondata)
+## Call the ```get_session_info``` function: [API Reference](api-reference#sessionget_session_info)
 ```js
 session.get_session_info()
 ```
 - This function requires a database call each time it's called.
 
-## Call the ```update_session_info``` function: [API Reference](../api-reference#sessionupdatesessiondatadata)
+## Call the ```update_session_info``` function: [API Reference](api-reference#sessionupdate_session_infoinfo)
 ```js
 session.update_session_info(info)
 ```

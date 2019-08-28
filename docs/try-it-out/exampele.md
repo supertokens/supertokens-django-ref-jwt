@@ -4,7 +4,7 @@ title: Example code and Demo
 sidebar_label: Example code and Demo
 ---
 
-You can check out the <a href="https://github.com/supertokens/auth-demo" target="_blank" class="highlighted-link">sample project</a> as an example for how to use the frontend and backend SuperTokens libraries.
+You can check out the <a href="https://github.com/supertokens/auth-demo" target="_blank" class="highlighted-link">sample project</a> as an example for how to use the frontend and backend SuperTokens libraries. The backend here is implemented in Node.js but it can give you a general idea about how to use it.
 
 We have created a live demo to show how SuperTokens helps prevent session theft and how it behaves in the event of an attack. You can interact with the demo on <a href="https://github.com/supertokens/auth-demo" target="_blank" class="highlighted-link">http://demo.supertokens.io</a>
 

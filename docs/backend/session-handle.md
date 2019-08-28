@@ -14,7 +14,7 @@ A ```session_handle``` is a unique ID for a session in your system. It stays the
 - Revoke a session: See "User Logout" section.
 - Update session information: See "Manipulating Session Data" section.
 
-## Call the ```get_all_session_handles_for_user``` function: [API Reference](api-reference#getallsessionhandlesforuseruserid)
+## Call the ```get_all_session_handles_for_user``` function: [API Reference](api-reference#get_all_session_handles_for_useruser_id)
 ```python
 SuperTokens.get_all_session_handles_for_user(user_id)
 ```

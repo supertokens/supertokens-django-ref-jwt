@@ -5,7 +5,7 @@ sidebar_label: User login
 ---
 To login a user, you must first authenticate their credentials and then create a session for them so that they can access your APIs.
 
-## Call the ```create_new_session``` function: [API Reference](../api-reference#createnewsessionres-userid-jwtpayload-sessiondata)
+## Call the ```create_new_session``` function: [API Reference](api-reference#create_new_sessionresponse-user_id-jwt_payload-none-session_info-none)
 ```python
 supertokens.create_new_session(response, user_id, jwt_payload, session_info)
 ```
@@ -26,7 +26,7 @@ from supertokens_jwt_ref import supertokens
 ...
 user_id = "User1" # authentication will be done by you
 jwt_payload = { 'userId': 'user_id', 'name': 'spooky action at a distance'};
-session_info = {awesomeThings: ['programming', 'javascript', 'SuperTokens']};
+session_info = {'awesomeThings': ['programming', 'python', 'supertokens']};
 response = Response()
 ...
 supertokens.create_new_session(response, user_id, jwt_payload, session_info)

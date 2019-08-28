@@ -20,7 +20,7 @@ Our frontend SDK takes care of calling your refresh session endpoint and managin
 If you are building a webapp and get a <code>SuperTokensTryRefreshTokenException</code> excpetion on your backend for a <code>GET</code> request that returns <code>HTML</code>, then you should reply with  <code>HTML & JS</code> code that calls your <code>/api/refresh</code> endpoint. Once that is successful, your frontend code should redirect the browser to call again the original <code>GET</code> API. More details on this in the frontend section.
 </div>
 
-## Call the ```refresh_session``` function: [API Reference](../api-reference#refreshsessionreq-res)
+## Call the ```refresh_session``` function: [API Reference](api-reference#refresh_sessionrequest-response)
 ```python
 supertokens.refresh_session(request, response);
 ```

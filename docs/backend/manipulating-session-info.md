@@ -16,21 +16,21 @@ sidebar_label: Manipulating Session Info
     - Fetching or modification of this is not synchronized per session.
 
 ## If you have a session object
-Please see the [Session Object](session-object#call-the-getsessiondata-function-api-reference-api-reference-sessiongetsessiondata) section for more information.
+Please see the [Session Object](session-object#call-the-get_session_info-function-api-reference-api-reference-sessionget_session_info) section for more information.
 
 ## If you do not have a session object
 <div class="specialNote">
 These functions should only be used if absolutely necessary, since they do not handle cookies for you. So if you are able to get a <code>Session</code> object AND have not already sent a reply to the client, please use the functions from the above section instead.
 </div>
 
-### Call the ```get_session_info``` function: [API Reference](../api-reference#getsessiondatasessionhandle)
-```js
+### Call the ```get_session_info``` function: [API Reference](api-reference#get_session_infosession_handle)
+```python
 SuperTokens.get_session_info(session_handle);
 ```
 - This function requires a database call each time it's called.
 
-### Call the ```update_session_data``` function: [API Reference](../api-reference#updatesessiondatasessionhandle-data)
-```js
+### Call the ```update_session_data``` function: [API Reference](api-reference#update_session_infosession_handle-info)
+```python
 SuperTokens.update_session_data(session_handle, new_session_info);
 ```
 - This function overrides the current data stored for this ```session_handle```.

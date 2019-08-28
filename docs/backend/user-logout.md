@@ -13,10 +13,10 @@ If you can get the <code>Session</code> object, use that since revoking a sessio
 </div>
 
 ## If you have a ```Session``` object
-Please see the [Session Object](session-object#call-the-revokesession-function-api-reference-api-reference-sessionrevokesession) section for more information.
+Please see the [Session Object](session-object#call-the-revoke_session-function-api-reference-api-reference-sessionrevoke_session) section for more information.
 
 ## If you have a ```session_handle```
-### Call the ```revoke_session``` function: [API Reference](../api-reference#revokesessionusingsessionhandlesessionhandle)
+### Call the ```revoke_session``` function: [API Reference](api-reference#revoke_sessionsession_handle)
 ```python
 supertokens.revoke_session(session_handle);
 ```
@@ -24,7 +24,7 @@ supertokens.revoke_session(session_handle);
 - <span class="highlighted-text">Does not clear any cookies</span>
 
 ## If you have a ```user_id```
-### Call the ```revoke_all_sessions_for_user``` function: [API Reference](../api-reference#revokeallsessionsforuseruserid)
+### Call the ```revoke_all_sessions_for_user``` function: [API Reference](api-reference#revoke_all_sessions_for_useruser_id)
 ```python
 supertokens.revoke_all_sessions_for_user(user_id);
 ```

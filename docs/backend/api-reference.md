@@ -21,9 +21,9 @@ sidebar_label: API Reference
     - This can be freely modified during the lifetime of a session. But we do not synchronize calls to modify this - you must take care of locks yourself.
 ##### Returns
 - ```Session``` on successful creation of a session
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the database.
+    - Examples of when this is thorwn is if the library could not connect to the database.
 ##### Additional information
 - Creates a new access and a new refresh token for this session.
 - This function will set the following cookies and headers in the ```response``` object for you:
@@ -46,16 +46,16 @@ sidebar_label: API Reference
     - If in ```settings.py```, ```ANTI_CSRF_ENABLE``` in the ```SUPER_TOKENS``` object is set to ```False```, this value will be considered as ```False``` even if value ```True``` is passed
 ##### Returns
 - ```Session``` on successful verification of a session
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the database.
+    - Examples of when this is thorwn is if the library could not connect to the database.
 - ```SuperTokensUnauthorizedException```
-    - This is raised if the ```idRefreshToken``` cookie is missing from the ```request``` object or if the session has been revoked.
-    - When this is raised, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
+    - This is thorwn if the ```idRefreshToken``` cookie is missing from the ```request``` object or if the session has been revoked.
+    - When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
 - ```SuperTokensTryRefreshTokenException```
-    - This will be raised if JWT verification fails. This happens, for example, if the token has expired or the JWT signing key has changed.
-    - This will be raised if ```enable_csrf_protection``` is ```True```, `in ```settings.py```, ```ANTI_CSRF_ENABLE``` in the ```SUPER_TOKENS``` object is set to ```True``` (default: True) and ```anti-csrf``` token validation fails.
-    - When this is raised, none of the auth cookies are removed - you should return a ```session expired``` status code and instruct your frontend to call the refresh token API endpoint. Our frontend SDK takes care of this for you in most cases.
+    - This will be thorwn if JWT verification fails. This happens, for example, if the token has expired or the JWT signing key has changed.
+    - This will be thorwn if ```enable_csrf_protection``` is ```True```, `in ```settings.py```, ```ANTI_CSRF_ENABLE``` in the ```SUPER_TOKENS``` object is set to ```True``` (default: True) and ```anti-csrf``` token validation fails.
+    - When this is thorwn, none of the auth cookies are removed - you should return a ```session expired``` status code and instruct your frontend to call the refresh token API endpoint. Our frontend SDK takes care of this for you in most cases.
 ##### Additional information
 - Verifies the current session using the ```request``` object.
 - This function will mostly never require a database call since we are using JWT access tokens unless ```blacklisting``` is enabled.
@@ -89,9 +89,9 @@ sidebar_label: API Reference
 - none
 ##### Returns
 - nothing
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the database.
+    - Examples of when this is thorwn is if the library could not connect to the database.
 
 <div class="divider"></div>
 
@@ -100,12 +100,12 @@ sidebar_label: API Reference
 - none
 ##### Returns
 - ```object | array | number | string | boolean | None>``` - The result will be deeply equal to whatever was passed to the ```create_new_session``` function.
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the database.
+    - Examples of when this is thorwn is if the library could not connect to the database.
 - ```SuperTokensUnauthorizedException```
-    - This is raised if the current session was revoked or has expired.
-    - When this is raised, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
+    - This is thorwn if the current session was revoked or has expired.
+    - When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
 ##### Additional information
 - It does nothing to synchronize with other ```get_session_info``` or ```update_session_info``` calls on this session. So it is up to you to handle various race conditions depending on your use case. 
 
@@ -117,12 +117,12 @@ sidebar_label: API Reference
     - Type: ```object | array | number | string | boolean | None``` 
 ##### Returns
 - nothing
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the database.
+    - Examples of when this is thorwn is if the library could not connect to the database.
 - ```SuperTokensUnauthorizedException```
-    - This is raised if the current session was revoked or has expired.
-    - When this is raised, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
+    - This is thorwn if the current session was revoked or has expired.
+    - When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
 ##### Additional information
 - It does nothing to synchronize with other ```get_session_info``` or ```update_session_info``` calls on this session. So it is up to you to handle various race conditions depending on your use case. 
 
@@ -136,15 +136,15 @@ sidebar_label: API Reference
     - Type: ```Response``` from ```rest_framework.response``` or you can also use ```HttpResponse``` from ```django.http``` or any response method which is extended from HttpResponse
 ##### Returns
 - ```Session``` on successful refresh.
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the MySQL instance.
+    - Examples of when this is thorwn is if the library could not connect to the MySQL instance.
 - ```SuperTokensUnauthorizedException```
-    - This is raised if the current session was revoked or has expired, or if the provided refresh token is invalid.
-    - When this is raised, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
+    - This is thorwn if the current session was revoked or has expired, or if the provided refresh token is invalid.
+    - When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
 - ```SuperTokensTokenTheftException```
-    - This is raised if token theft is detected.
-    - When this is raised, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
+    - This is thorwn if token theft is detected.
+    - When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.
     - If you are handling this exception, you'll have two functions on the exception object: get_user_id() and get_session_handle() to get user_id and session_handle for which token theft was detected
     - Please see the token theft detection section for more information.
 
@@ -156,11 +156,11 @@ sidebar_label: API Reference
     - Type: ```string```
     - Identifies a unique session in your system. Please see the Session Handle section for more information.
 ##### Returnsof the resolved ```Promise``` will be deeply equal to whatever was passed to the ```create_new_session``` function.
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the MySQL instance.
+    - Examples of when this is thorwn is if the library could not connect to the MySQL instance.
 - ```SuperTokensUnauthorizedException```
-    - This is raised if the current session was revoked or has expired.
+    - This is thorwn if the current session was revoked or has expired.
     - You must handle auth cookie management yourself here (if relevant). Please see the Error Handling section for more details.
 ##### Additional information
 - It does nothing to synchronize with other get_session_info or update_session_info calls on this ```session_handle```. So it is up to you to handle various race conditions depending on your use case.
@@ -176,11 +176,11 @@ sidebar_label: API Reference
     - Type: ```object | array | number | string | boolean | None``` 
 ##### Returns
 - nothind
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the MySQL instance.
+    - Examples of when this is thorwn is if the library could not connect to the MySQL instance.
 - ```SuperTokensUnauthorizedException```
-    - This is raised if the current session was revoked or has expired.
+    - This is thorwn if the current session was revoked or has expired.
     - You must handle auth cookie management yourself here (if relevant). Please see the Error Handling section for more details.
 ##### Additional information
 - It does nothing to synchronize with other get_session_info or update_session_info calls on this ```session_handle```. So it is up to you to handle various race conditions depending on your use case.
@@ -196,9 +196,9 @@ sidebar_label: API Reference
 - ```boolean```
     - Will be ```True``` if a row was removed from the database table.
     - Will be ```False``` if either the ```session_handle``` is invalid, or the session had already been removed.
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the database.
+    - Examples of when this is thorwn is if the library could not connect to the database.
 ##### Additional information
 - This function deletes the session from the database
 - If using blacklisting, this will immediately invalidate the JWT access token. If not, the user may still be able to continue using their access token to call authenticated APIs (until it expires).
@@ -211,9 +211,9 @@ sidebar_label: API Reference
     - Type: ```string | number```
 ##### Returns
 - nothing
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the database.
+    - Examples of when this is thorwn is if the library could not connect to the database.
 ##### Additional information
 - This function deletes many sessions from the database. If it throws an error, then some sessions may already have been deleted.
 - If using blacklisting, this will immediately invalidate the JWT access tokens associated with those sessions. If not, the user may still be able to continue using their access token to call authenticated APIs (until it expires).
@@ -227,9 +227,9 @@ sidebar_label: API Reference
 ##### Returns
 - ```string[]```
     - Each element in the ```string[]``` is a ```session_handle```
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if the library could not connect to the database.
+    - Examples of when this is thorwn is if the library could not connect to the database.
 
 <div class="divider"></div>
 
@@ -239,6 +239,6 @@ sidebar_label: API Reference
     - Type: ```Response``` from ```rest_framework.response``` or you can also use ```HttpResponse``` from ```django.http``` or any response method which is extended from HttpResponse
 ##### Returns
 - nothing
-##### Raises
+##### Throws
 - ```SuperTokensGeneralException```
-    - Examples of when this is raised is if something went wrong while setting headers.
+    - Examples of when this is thorwn is if something went wrong while setting headers.

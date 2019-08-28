@@ -11,7 +11,7 @@ This section is only applicable to web browser based apps.
 
 The primary purpose of an ```Options``` API is to enable CORS.
 
-## Call the ```set_headers_for_options_api``` function: [API Reference](../api-reference#setrelevantheadersforoptionsapires)
+## Call the ```set_headers_for_options_api``` function: [API Reference](api-reference#set_headers_for_options_apiresponse)
 ```python
 supertokens.set_headers_for_options_api(response);
 ```

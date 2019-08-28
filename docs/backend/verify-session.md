@@ -4,7 +4,7 @@ title: Verify Session
 sidebar_label: Verify Session
 ---
 
-## Call the ```get_session``` function: [API Reference](../api-reference#getsessionreq-res-enablecsrfprotection)
+## Call the ```get_session``` function: [API Reference](api-reference#get_sessionrequest-response-enable_csrf_protection)
 ```python
 supertokens.get_session(request, response, enable_csrf_protection);
 ```
