@@ -5,3 +5,4 @@ virtual
 build
 dist
 supertokens_jwt_ref.egg-info
+.DS_Store
