@@ -93,7 +93,7 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the database.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database.</li>
 </ul></li>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="additional-information"></a><a href="#additional-information" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional information</h5>
@@ -106,7 +106,7 @@
 <li>Sets <code>sRefreshToken</code> in cookies containing the refresh token. This cookie has <code>HttpOnly</code> set to <code>True</code> and <code>secure</code> set to <code>True</code> depending on your passed config. <span class="highlighted-text">This cookie should be sent only to the refresh token API.</span></li>
 <li>Sets <code>sIdRefreshToken</code> in cookies containing a unique ID. Details for why this is needed can be found in the &quot;How it works&quot; section. This cookie has <code>HttpOnly</code> set to <code>False</code> and <code>secure</code> set to <code>False</code>. This cookie should be sent for all API calls that require authentication.</li>
 </ul></li>
-<li>Inserts a new row in the MySQL table for this new session.</li>
+<li>Inserts a new row in the database table for this new session.</li>
 </ul>
 <div class="divider"></div>
 <h2><a class="anchor" aria-hidden="true" id="get_sessionrequest-response-enable_csrf_protection"></a><a href="#get_sessionrequest-response-enable_csrf_protection" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>get_session(request, response, enable_csrf_protection)</code></h2>
@@ -134,18 +134,18 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the database.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database.</li>
 </ul></li>
 <li><code>SuperTokensUnauthorizedException</code>
 <ul>
-<li>This is thorwn if the <code>idRefreshToken</code> cookie is missing from the <code>request</code> object or if the session has been revoked.</li>
-<li>When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
+<li>This is thrown if the <code>idRefreshToken</code> cookie is missing from the <code>request</code> object or if the session has been revoked.</li>
+<li>When this is thrown, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
 </ul></li>
 <li><code>SuperTokensTryRefreshTokenException</code>
 <ul>
-<li>This will be thorwn if JWT verification fails. This happens, for example, if the token has expired or the JWT signing key has changed.</li>
-<li>This will be thorwn if <code>enable_csrf_protection</code> is <code>True</code>, `in <code>settings.py</code>, <code>ANTI_CSRF_ENABLE</code> in the <code>SUPER_TOKENS</code> object is set to <code>True</code> (default: True) and <code>anti-csrf</code> token validation fails.</li>
-<li>When this is thorwn, none of the auth cookies are removed - you should return a <code>session expired</code> status code and instruct your frontend to call the refresh token API endpoint. Our frontend SDK takes care of this for you in most cases.</li>
+<li>This will be thrown if JWT verification fails. This happens, for example, if the token has expired or the JWT signing key has changed.</li>
+<li>This will be thrown if <code>enable_csrf_protection</code> is <code>True</code>, `in <code>settings.py</code>, <code>ANTI_CSRF_ENABLE</code> in the <code>SUPER_TOKENS</code> object is set to <code>True</code> (default: True) and <code>anti-csrf</code> token validation fails.</li>
+<li>When this is thrown, none of the auth cookies are removed - you should return a <code>session expired</code> status code and instruct your frontend to call the refresh token API endpoint. Our frontend SDK takes care of this for you in most cases.</li>
 </ul></li>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="additional-information-1"></a><a href="#additional-information-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional information</h5>
@@ -197,7 +197,7 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the database.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database.</li>
 </ul></li>
 </ul>
 <div class="divider"></div>
@@ -208,18 +208,18 @@
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="returns-5"></a><a href="#returns-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
 <ul>
-<li><code>object | array | number | string | boolean | None&gt;</code> - The result will be deeply equal to whatever was passed to the <code>create_new_session</code> function.</li>
+<li><code>object | array | number | string | boolean | None</code> - The result will be deeply equal to whatever was passed to the <code>create_new_session</code> function.</li>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="throws-5"></a><a href="#throws-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Throws</h5>
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the database.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database.</li>
 </ul></li>
 <li><code>SuperTokensUnauthorizedException</code>
 <ul>
-<li>This is thorwn if the current session was revoked or has expired.</li>
-<li>When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
+<li>This is thrown if the current session was revoked or has expired.</li>
+<li>When this is thrown, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
 </ul></li>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="additional-information-2"></a><a href="#additional-information-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional information</h5>
@@ -243,12 +243,12 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the database.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database.</li>
 </ul></li>
 <li><code>SuperTokensUnauthorizedException</code>
 <ul>
-<li>This is thorwn if the current session was revoked or has expired.</li>
-<li>When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
+<li>This is thrown if the current session was revoked or has expired.</li>
+<li>When this is thrown, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
 </ul></li>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="additional-information-3"></a><a href="#additional-information-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional information</h5>
@@ -276,17 +276,17 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the MySQL instance.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database instance.</li>
 </ul></li>
 <li><code>SuperTokensUnauthorizedException</code>
 <ul>
-<li>This is thorwn if the current session was revoked or has expired, or if the provided refresh token is invalid.</li>
-<li>When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
+<li>This is thrown if the current session was revoked or has expired, or if the provided refresh token is invalid.</li>
+<li>When this is thrown, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
 </ul></li>
 <li><code>SuperTokensTokenTheftException</code>
 <ul>
-<li>This is thorwn if token theft is detected.</li>
-<li>When this is thorwn, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
+<li>This is thrown if token theft is detected.</li>
+<li>When this is thrown, all the relevant auth cookies are cleared by this function call, so you can redirect the user to a login page.</li>
 <li>If you are handling this exception, you'll have two functions on the exception object: get_user_id() and get_session_handle() to get user_id and session_handle for which token theft was detected</li>
 <li>Please see the token theft detection section for more information.</li>
 </ul></li>
@@ -301,16 +301,17 @@
 <li>Identifies a unique session in your system. Please see the Session Handle section for more information.</li>
 </ul></li>
 </ul>
-<h5><a class="anchor" aria-hidden="true" id="returnsof-the-resolved-promise-will-be-deeply-equal-to-whatever-was-passed-to-the-create_new_session-function"></a><a href="#returnsof-the-resolved-promise-will-be-deeply-equal-to-whatever-was-passed-to-the-create_new_session-function" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returnsof the resolved <code>Promise</code> will be deeply equal to whatever was passed to the <code>create_new_session</code> function.</h5>
+<h5><a class="anchor" aria-hidden="true" id="returns-8"></a><a href="#returns-8" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
+<p><code>object | array | number | string | boolean | None</code> - The result will be deeply equal to whatever was passed to the <code>create_new_session</code> function.</p>
 <h5><a class="anchor" aria-hidden="true" id="throws-8"></a><a href="#throws-8" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Throws</h5>
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the MySQL instance.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database instance.</li>
 </ul></li>
 <li><code>SuperTokensUnauthorizedException</code>
 <ul>
-<li>This is thorwn if the current session was revoked or has expired.</li>
+<li>This is thrown if the current session was revoked or has expired.</li>
 <li>You must handle auth cookie management yourself here (if relevant). Please see the Error Handling section for more details.</li>
 </ul></li>
 </ul>
@@ -332,7 +333,7 @@
 <li>Type: <code>object | array | number | string | boolean | None</code></li>
 </ul></li>
 </ul>
-<h5><a class="anchor" aria-hidden="true" id="returns-8"></a><a href="#returns-8" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
+<h5><a class="anchor" aria-hidden="true" id="returns-9"></a><a href="#returns-9" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
 <ul>
 <li>nothind</li>
 </ul>
@@ -340,11 +341,11 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the MySQL instance.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database instance.</li>
 </ul></li>
 <li><code>SuperTokensUnauthorizedException</code>
 <ul>
-<li>This is thorwn if the current session was revoked or has expired.</li>
+<li>This is thrown if the current session was revoked or has expired.</li>
 <li>You must handle auth cookie management yourself here (if relevant). Please see the Error Handling section for more details.</li>
 </ul></li>
 </ul>
@@ -362,7 +363,7 @@
 <li>Identifies a unique session in your system. Please see the Session Handle section for more information.</li>
 </ul></li>
 </ul>
-<h5><a class="anchor" aria-hidden="true" id="returns-9"></a><a href="#returns-9" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
+<h5><a class="anchor" aria-hidden="true" id="returns-10"></a><a href="#returns-10" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
 <ul>
 <li><code>boolean</code>
 <ul>
@@ -374,7 +375,7 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the database.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database.</li>
 </ul></li>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="additional-information-6"></a><a href="#additional-information-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional information</h5>
@@ -391,7 +392,7 @@
 <li>Type: <code>string | number</code></li>
 </ul></li>
 </ul>
-<h5><a class="anchor" aria-hidden="true" id="returns-10"></a><a href="#returns-10" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
+<h5><a class="anchor" aria-hidden="true" id="returns-11"></a><a href="#returns-11" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
 <ul>
 <li>nothing</li>
 </ul>
@@ -399,7 +400,7 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the database.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database.</li>
 </ul></li>
 </ul>
 <h5><a class="anchor" aria-hidden="true" id="additional-information-7"></a><a href="#additional-information-7" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional information</h5>
@@ -416,7 +417,7 @@
 <li>Type: <code>string | number</code></li>
 </ul></li>
 </ul>
-<h5><a class="anchor" aria-hidden="true" id="returns-11"></a><a href="#returns-11" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
+<h5><a class="anchor" aria-hidden="true" id="returns-12"></a><a href="#returns-12" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
 <ul>
 <li><code>string[]</code>
 <ul>
@@ -427,7 +428,7 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if the library could not connect to the database.</li>
+<li>Examples of when this is thrown is if the library could not connect to the database.</li>
 </ul></li>
 </ul>
 <div class="divider"></div>
@@ -439,7 +440,7 @@
 <li>Type: <code>Response</code> from <code>rest_framework.response</code> or you can also use <code>HttpResponse</code> from <code>django.http</code> or any response method which is extended from HttpResponse</li>
 </ul></li>
 </ul>
-<h5><a class="anchor" aria-hidden="true" id="returns-12"></a><a href="#returns-12" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
+<h5><a class="anchor" aria-hidden="true" id="returns-13"></a><a href="#returns-13" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Returns</h5>
 <ul>
 <li>nothing</li>
 </ul>
@@ -447,7 +448,7 @@
 <ul>
 <li><code>SuperTokensGeneralException</code>
 <ul>
-<li>Examples of when this is thorwn is if something went wrong while setting headers.</li>
+<li>Examples of when this is thrown is if something went wrong while setting headers.</li>
 </ul></li>
 </ul>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/supertokens-django-ref-jwt/docs/next/backend/session-handle"><span class="arrow-prev">← </span><span>Session Handle</span></a><a class="docs-next button" href="/supertokens-django-ref-jwt/docs/next/frontend/frontend"><span>Choose your frontend</span><span class="arrow-next"> →</span></a></div></div></div></div></div></body></html>
