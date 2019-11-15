@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/supertokens/supertokens-django-ref-jwt/blob/master/LICENSE)
 <a href="https://supertokens.io/discord">
 <img src="https://img.shields.io/discord/603466164219281420.svg?logo=discord" alt="chat on Discord"></a>
+[![Slack](https://img.shields.io/badge/slack-chat-brightgreen?logo=slack)](https://join.slack.com/t/webmobilesecurity/shared_invite/enQtODM4MDM2MTQ1MDYyLTFiNmNhYzRlNGNjODhkNjc5MDRlYTBmZTBiNjFhOTFhYjI1MTc3ZWI2ZjY3Y2M3ZjY1MGJhZmRiNDFjNDNjOTM)
 
 **Master**
 [![CircleCI](https://circleci.com/gh/supertokens/supertokens-django-ref-jwt.svg?style=svg)](https://circleci.com/gh/supertokens/supertokens-django-ref-jwt)
