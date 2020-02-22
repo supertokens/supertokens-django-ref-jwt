@@ -3,7 +3,13 @@ from .constant import (
     REFRESH_TOKEN_COOKIE_KEY,
     ID_REFRESH_TOKEN_COOKIE_KEY,
     ANTI_CSRF_HEADER_SET_KEY,
-    ANTI_CSRF_HEADER_GET_KEY
+    ANTI_CSRF_HEADER_GET_KEY,
+    ID_REFRESH_TOKEN_HEADER_GET_KEY,
+    ID_REFRESH_TOKEN_HEADER_SET_KEY,
+    SUPERTOKENS_SDK_NAME_HEADER_GET_KEY,
+    SUPERTOKENS_SDK_NAME_HEADER_SET_KEY,
+    SUPERTOKENS_SDK_VERSION_HEADER_GET_KEY,
+    SUPERTOKENS_SDK_VERSION_HEADER_SET_KEY
 )
 from .exceptions import raise_general_exception
 from datetime import datetime
@@ -12,6 +18,8 @@ from .utils import get_timezone
 
 def set_options_api_headers(response):
     set_header(response, 'Access-Control-Allow-Headers', ANTI_CSRF_HEADER_SET_KEY)
+    set_header(response, "Access-Control-Allow-Headers", SUPERTOKENS_SDK_NAME_HEADER_SET_KEY)
+    set_header(response, "Access-Control-Allow-Headers", SUPERTOKENS_SDK_VERSION_HEADER_SET_KEY)
     set_header(response, 'Access-Control-Allow-Credentials', 'true')
 
 
@@ -65,6 +73,8 @@ def clear_session_from_cookie(response):
                supertokens_settings.ACCESS_TOKEN_PATH, supertokens_settings.COOKIE_DOMAIN, False, False)
     set_cookie(response, REFRESH_TOKEN_COOKIE_KEY, '', 0, supertokens_settings.REFRESH_TOKEN_PATH,
                supertokens_settings.COOKIE_DOMAIN, supertokens_settings.COOKIE_SECURE, True)
+    set_header(response, ID_REFRESH_TOKEN_HEADER_SET_KEY, "remove")
+    set_header(response, "Access-Control-Expose-Headers", ID_REFRESH_TOKEN_HEADER_SET_KEY)
 
 
 def attach_access_token_to_cookie(response, token, expires_at):
@@ -79,7 +89,7 @@ def attach_refresh_token_to_cookie(response, token, expires_at):
                supertokens_settings.COOKIE_DOMAIN, supertokens_settings.COOKIE_SECURE, True)
 
 
-def attach_id_refresh_token_to_cookie(response, token, expires_at):
+def attach_id_refresh_token_to_cookie_and_header(response, token, expires_at):
     from .settings import supertokens_settings
     set_cookie(response, ID_REFRESH_TOKEN_COOKIE_KEY, token, expires_at,
                supertokens_settings.ACCESS_TOKEN_PATH, supertokens_settings.COOKIE_DOMAIN, False, False)

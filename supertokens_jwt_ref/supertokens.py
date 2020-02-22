@@ -7,7 +7,7 @@ from .cookie_and_header import (
     get_refresh_token_from_cookie,
     attach_refresh_token_to_cookie,
     get_id_refresh_token_from_cookie,
-    attach_id_refresh_token_to_cookie,
+    attach_id_refresh_token_to_cookie_and_header,
     attach_anti_csrf_header_if_required
 )
 from .session import Session
@@ -28,7 +28,7 @@ def create_new_session(response, user_id, jwt_payload=None, session_info=None):
         response, new_session['access_token']['value'], new_session['access_token']['expires_at'])
     attach_refresh_token_to_cookie(
         response, new_session['refresh_token']['value'], new_session['refresh_token']['expires_at'])
-    attach_id_refresh_token_to_cookie(
+    attach_id_refresh_token_to_cookie_and_header(
         response, new_session['id_refresh_token']['value'], new_session['id_refresh_token']['expires_at'])
     attach_anti_csrf_header_if_required(
         response, new_session['anti_csrf_token'])
@@ -80,7 +80,7 @@ def refresh_session(request, response):
             response, new_session['new_access_token']['value'], new_session['new_access_token']['expires_at'])
         attach_refresh_token_to_cookie(
             response, new_session['new_refresh_token']['value'], new_session['new_refresh_token']['expires_at'])
-        attach_id_refresh_token_to_cookie(
+        attach_id_refresh_token_to_cookie_and_header(
             response, new_session['new_id_refresh_token']['value'], new_session['new_id_refresh_token']['expires_at'])
         attach_anti_csrf_header_if_required(
             response, new_session['new_anti_csrf_token'])
